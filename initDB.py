@@ -10,7 +10,7 @@ db = pymysql.connect(host='localhost',
 cursor = db.cursor()
  
 
-cursor.execute("DROP TABLE IF EXISTS Customer, Vender, Product, Ordered;")
+cursor.execute("DROP TABLE IF EXISTS Customer, Vender, Product, Ordered, vAdmin;")
 
 sql_customer = '''
     CREATE TABLE Customer(
@@ -61,7 +61,8 @@ sql_vender_admin = '''
     CREATE TABLE vAdmin(
         id INTEGER NOT NULL AUTO_INCREMENT,
         username VARCHAR(50) NOT NULL,
-        password CHAR(256) NOT NULL,
+        password CHAR(255) NOT NULL,
+        salt INTEGER NOT NULL,
         PRIMARY KEY(id)
     )
 '''
@@ -70,6 +71,7 @@ try:
     cursor.execute(sql_vender)
     cursor.execute(sql_product)
     cursor.execute(sql_order)
+    cursor.execute(sql_vender_admin)
     print ('Table created')
 except ValueError as e:
     print(e)
