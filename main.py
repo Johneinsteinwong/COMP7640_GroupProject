@@ -20,6 +20,15 @@ mysql = pymysql.connect(
     db = app.config['MYSQL_DB']
 )
 
+@app.route('/pythonlogin/vAdminHome')
+def vAdminHome():
+     # Check if the user is logged in
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('vAdminHome.html', username=session['username'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
 @app.route('/pythonlogin/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
@@ -41,7 +50,7 @@ def login():
             session['id'] = account[0]#['id']
             session['username'] = account[1]#['username']
             # Redirect to home page
-            return 'Logged in successfully!'
+            return redirect(url_for('vAdminHome'))
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
