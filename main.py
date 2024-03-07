@@ -24,8 +24,11 @@ mysql = pymysql.connect(
 def vAdminHome():
      # Check if the user is logged in
     if 'loggedin' in session:
+        cursor = mysql.cursor()
+        cursor.execute("SELECT * FROM Vender")
+        data = cursor.fetchall()
         # User is loggedin show them the home page
-        return render_template('vAdminHome.html', username=session['username'])
+        return render_template('vAdminHome.html', username=session['username'], data=data)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
