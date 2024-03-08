@@ -3,7 +3,7 @@
 # TODO
 
 - Vender Administration
-    - [✓] Display a listing of all vendors
+    - [x] Display a listing of all vendors
     - [ ] Onboard new vendors onto the marketplace
 - Product Catalog Management
     - [ ] Browse all products offered by a specific vendor
