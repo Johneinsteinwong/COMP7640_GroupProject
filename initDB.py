@@ -1,9 +1,10 @@
 import pymysql
+from global_profile import database_login_user
 
 db = pymysql.connect(host='localhost',
-                     user='test',
-                     password='1234567890-=',
-                     database='ecommerce')
+                     user=database_login_user.name,
+                     password=database_login_user.password,
+                     database=database_login_user.database)
  
 
 
@@ -17,6 +18,9 @@ sql_customer = '''
         cid INTEGER NOT NULL AUTO_INCREMENT,
         contactNumber INTEGER(8) NOT NULL,
         shippingDetail CHAR(20) NOT NULL,
+        username VARCHAR(50) NOT NULL,
+        password CHAR(255) NOT NULL,
+        salt INTEGER NOT NULL,
         PRIMARY KEY(cid)
     );
 '''
@@ -26,6 +30,8 @@ sql_vender = '''
         vname CHAR(20) NOT NULL,
         score INTEGER,
         geographic CHAR(20) NOT NULL,
+        password CHAR(255) NOT NULL,
+        salt INTEGER NOT NULL,
         PRIMARY KEY(vid)
     );
 '''
@@ -53,7 +59,7 @@ sql_order = '''
         quantity INTEGER NOT NULL,
         orderStatus ENUM('order received', 'shipping', 'fulfilled', 'cancelled') NOT NULL,
         orderTime Timestamp NOT NULL,
-        PRIMARY KEY(oid),
+        PRIMARY KEY(oid, cid, pid),
         FOREIGN KEY(cid) REFERENCES Customer(cid),
         FOREIGN KEY(pid) REFERENCES Product(pid)
     );
