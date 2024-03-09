@@ -16,7 +16,7 @@ sql_customer = '''
     CREATE TABLE Customer(
         cid INTEGER NOT NULL AUTO_INCREMENT,
         contactNumber INTEGER(8) NOT NULL,
-        shipping CHAR(20) NOT NULL,
+        shippingDetail CHAR(20) NOT NULL,
         PRIMARY KEY(cid)
     );
 '''
@@ -24,7 +24,7 @@ sql_vender = '''
     CREATE TABLE Vender(
         vid INTEGER NOT NULL AUTO_INCREMENT,
         vname CHAR(20) NOT NULL,
-        score INTEGER NOT NULL,
+        score INTEGER,
         geographic CHAR(20) NOT NULL,
         PRIMARY KEY(vid)
     );
@@ -35,6 +35,7 @@ sql_product = '''
         pname CHAR(20) NOT NULL,
         price REAL NOT NULL,
         vid INTEGER NOT NULL,
+        inventory INTEGER NOT NULL,
         tag1 CHAR(20),
         tag2 CHAR(20),
         tag3 CHAR(20),
@@ -50,8 +51,8 @@ sql_order = '''
         cid INTEGER NOT NULL,
         pid INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
-        orderStatus ENUM('deliverying', 'fulfilled', 'cancelled') NOT NULL,
-        time Timestamp NOT NULL,
+        orderStatus ENUM('order received', 'shipping', 'fulfilled', 'cancelled') NOT NULL,
+        orderTime Timestamp NOT NULL,
         PRIMARY KEY(oid),
         FOREIGN KEY(cid) REFERENCES Customer(cid),
         FOREIGN KEY(pid) REFERENCES Product(pid)
