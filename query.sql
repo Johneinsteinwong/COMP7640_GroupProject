@@ -17,7 +17,7 @@ WHERE vname = ?
 -- Introduce new products to a vendor's catalog
 cursor.execute('''
 INSERT INTO Product(pname, price, vid) 
-VALUES (?,?,?)
+VALUES (%s,%f,%d)
 ''', () )
 
 -- Facilitate a search feature that allows users to discover products using tags, 
@@ -28,10 +28,10 @@ WHERE pname LIKE '%%s%' OR tag1 = %s OR tag2 = %s OR tag3 = %s
 
 -- Customer Register
 INSERT INTO Customer(contactNumber, shippingDetail)
-VALUES (?,?)
+VALUES (%d,%s)
 -- support product purchase. Record in database which customer purchases which product
 INSERT INTO Ordered(cid, pid, quantity, orderStatus, orderTime)
-VALUES (?,?,?,?,?)
+VALUES (%d,%d,%d,%s,%s)
 
 -- cancellation of the entire order before it enters the shipping process
 UPDATE Ordered
