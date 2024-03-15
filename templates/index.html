@@ -12,17 +12,19 @@
 		<div class="login">
 			<h1 >Login</h1>
 			<div class="links">
-				<a href="{{ url_for('login') }}" id="login_link">Login</a>
-				<a href="{{ url_for('login') }}" id="register_link">Register</a>
+				<!-- <a href="{{ url_for('login') }}" id="login_link">Login</a>
+				<a href="{{ url_for('login') }}" id="register_link">Register</a> -->
+				<a href=# id="login_link">Login</a>
+				<a href=# id="register_link">Register</a>
 			</div>
 
 			<form action="{{ url_for('login') }}" method="post">
-				<div>
-					<select name="usertype", title="usertype", id="usertype" required>
-						<option value="customer" id="type_customer">Customer</option>
-						<option value="vendor" id="type_vendor">Vendor</option>
-					</select>
-				</div>
+
+				<select name="usertype", title="usertype", id="usertype" required>
+					<option value="customer" id="type_customer">Customer</option>
+					<option value="vendor" id="type_vendor">Vendor</option>
+				</select>
+				
 				<label for="username">
 					<i class="fas fa-user"></i>
 				</label>
@@ -36,24 +38,7 @@
 			</form>
 
 			<!-- TODO: Doing register function -->
-			<!-- <form action="{{ url_for('register') }}" method="post">
-				<div>
-					<select name="usertype", title="usertype", id="usertype" required>
-						<option value="customer" id="type_customer">Customer</option>
-						<option value="vendor" id="type_vendor">Vendor</option>
-					</select>
-				</div>
-				<label for="username">
-					<i class="fas fa-user"></i>
-				</label>
-				<input type="text" name="username" placeholder="Username" id="username" required>
-				<label for="password">
-					<i class="fas fa-lock"></i>
-				</label>
-				<input type="password" name="password" placeholder="Password" id="password" required>
-				<div class="msg">{{ msg }}</div>
-				<input type="submit" value="Login">
-			</form> -->
+			
 
 		</div>
 	</body>

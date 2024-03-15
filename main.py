@@ -47,7 +47,7 @@ def customer_page():
      # Check if the user is logged in
     if 'loggedin' in session:
         cursor = mysql.cursor()
-        cursor.execute(query.customerProducts(), (session['username'],))
+        cursor.execute(query.customerProducts(), (session['customer_name'],))
         # query.customerProducts(session['username'])
         # cursor.execute("SELECT * FROM Product WHERE  = %s", (session['id'],))
         data = cursor.fetchall()
