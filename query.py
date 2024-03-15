@@ -11,6 +11,8 @@ db = pymysql.connect(host='localhost',
 
 cursor = db.cursor()
 
+# TODO: Change the following functions from in-function execute to return the sql string
+
 # Onboard new vendors onto the marketplace
 def addVendor(vname, geographic, password, salt):
     password = sha256(str.encode(password + str(salt))).hexdigest()
@@ -21,7 +23,18 @@ def addVendor(vname, geographic, password, salt):
     cursor.execute(sql,(vname, geographic, password, salt))
     db.commit()
 
+def customerProducts():
+    sql = '''
+    WITH TMP AS
+        (SELECT Ordered.*, pname FROM Ordered INNER JOIN Product 
+            ON Ordered.pid = Product.pid)
 
+    SELECT TMP.*, username FROM TMP INNER JOIN Customer 
+            ON TMP.cid = Customer.cid
+            WHERE username = %s;
+    '''
+    # cursor.execute(sql,(cname,))
+    return sql
 # Browse all products offered by a specific vendor
 #SELECT * FROM
 #(SELECT * FROM Product, Vender

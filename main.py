@@ -5,6 +5,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import pymysql
 from hashlib import sha256
 from global_profile import database_login_user
+from json import dump
+from query import db
+import query
 
 # In different environment, the usename of database and password may be
 # different, you can specify your name, password and database in the
@@ -39,6 +42,20 @@ def vAdminHome():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+@app.route('/customer_page')
+def customer_page():
+     # Check if the user is logged in
+    if 'loggedin' in session:
+        cursor = mysql.cursor()
+        cursor.execute(query.customerProducts(), (session['username'],))
+        # query.customerProducts(session['username'])
+        # cursor.execute("SELECT * FROM Product WHERE  = %s", (session['id'],))
+        data = cursor.fetchall()
+        # User is loggedin show them the home page
+        return render_template('customer_page.html', customer_name=session['customer_name'], data=data)
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
 # Kinney route
 @app.route('/vAdmin', methods=['GET', 'POST'])
 # John route
@@ -50,12 +67,13 @@ def admin_login():
         username = request.form['username']
         password = request.form['password']
         
+        
         # TODO: Need to update the salt here
         password = sha256(str.encode(password + str(1))).hexdigest()
 
         # Check if account exists using MySQL
         cursor = mysql.cursor()#.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM vadmin WHERE username = %s AND password = %s', (username, password,))
+        cursor.execute('SELECT * FROM vadmin WHERE username = %s AND password = %s', (username, password))
         # Fetch one record and return result
         account = cursor.fetchone()
         print(account)
@@ -81,9 +99,11 @@ def login():
         password = request.form['password']
 
         # TODO: realising getting the user type(customer/vendor)
-        login_type = request.form['usertype']
+        login_type = request.form.get('usertype')
 
-        print(request.form)
+        # print(dump(request.form))
+
+        print(request.form.get('usertype'))
 
         # TODO: Need to update the salt here
         password = sha256(str.encode(password + str(1))).hexdigest()
@@ -93,21 +113,27 @@ def login():
 
         # Detect which type of user is logging in
         if login_type == 'customer':
-            cursor.execute('SELECT * FROM Customer WHERE username = %s AND password = %s', (username, password,))
+            cursor.execute('SELECT * FROM Customer WHERE username = %s AND password = %s', (username, password))
         elif login_type == 'vendor':
-            cursor.execute('SELECT * FROM Vender WHERE vname = %s AND password = %s', (username, password,))
+            cursor.execute('SELECT * FROM Vender WHERE vname = %s AND password = %s', (username, password))
         
         # Fetch one record and return result
         account = cursor.fetchone()
         print(account)
         # If account exists in accounts table in out database
         if account:
-            # Create session data, we can access this data in other routes
             session['loggedin'] = True
-            session['id'] = account[0]#['id']
-            session['username'] = account[1]#['username']
+            if login_type == 'customer':
+                session['customer_name'] = account[3]#['customer_name']
+                return redirect(url_for('customer_page'))
+            # Create session data, we can access this data in other routes
+            elif login_type == 'vendor':
+                session['vendor_name'] = account[1]#['vname']
+
+            # session['id'] = account[0]#['id']
+            # session['username'] = account[1]#['username']
             # Redirect to home page
-            return redirect(url_for('vAdminHome'))
+            
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
