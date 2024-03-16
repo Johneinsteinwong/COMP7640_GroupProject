@@ -40,7 +40,7 @@ def vAdminHome():
         # User is loggedin show them the home page
         return render_template('vAdminHome.html', username=session['username'], data=data)
     # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
+    return redirect(url_for('admin_login'))
 
 @app.route('/customer_page')
 def customer_page():
@@ -54,7 +54,7 @@ def customer_page():
         # User is loggedin show them the home page
         return render_template('customer_page.html', customer_name=session['customer_name'], data=data)
     # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
+    return redirect(url_for('loginOrRegister'))
 
 # Kinney route
 @app.route('/vAdmin', methods=['GET', 'POST'])
@@ -91,9 +91,16 @@ def admin_login():
     # Show the login form with message (if any)
     return render_template('vAdmin.html', msg=msg)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def loginOrRegister():
+    login_activate = ""
+    register_activate = ""
+    return render_template('index.html', login_activate=login_activate, register_activate=register_activate)
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     msg = ''
+    login_activate = "active"
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
@@ -138,10 +145,12 @@ def login():
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
     # Show the login form with message (if any)
-    return render_template('index.html', msg=msg)
+    return render_template('index.html', msg=msg, login_activate=login_activate, register_activate="")
 
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     msg = ''
+    register_activate = "active"
     if request.method == 'POST' and 'reg_username' in request.form and 'reg_password' in request.form:
         if request.form.get('reg_password') != request.form.get('reg_re_password'):
             msg('Fuck you, what you are fucking doing?')
@@ -181,7 +190,7 @@ def register():
                     session['vendor_name'] = account[1]#['vname']
 
     # Show the login form with message (if any)
-    return render_template('index.html', msg=msg)
+    return render_template('index.html', msg=msg, register_activate=register_activate, login_activate="")
 
 if __name__ == '__main__':
     app.run(debug=True)
