@@ -98,7 +98,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # TODO: realising getting the user type(customer/vendor)
+        # DONE: realising getting the user type(customer/vendor)
         login_type = request.form.get('usertype')
 
         # print(dump(request.form))
@@ -140,6 +140,48 @@ def login():
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
+def register():
+    msg = ''
+    if request.method == 'POST' and 'reg_username' in request.form and 'reg_password' in request.form:
+        if request.form.get('reg_password') != request.form.get('reg_re_password'):
+            msg('Fuck you, what you are fucking doing?')
+        else:
+            # TODO: Input the message into the database
+
+            username = request.form['username']
+            password = request.form['password']
+
+            login_type = request.form.get('reg_usertype')
+
+
+            # print(request.form.get('usertype'))
+
+            password = sha256(str.encode(password + str(1))).hexdigest()
+
+            # Check if account exists using MySQL
+            cursor = mysql.cursor()#.connection.cursor(MySQLdb.cursors.DictCursor)
+
+            # Detect which type of user is logging in
+            if login_type == 'customer':
+                cursor.execute('SELECT * FROM Customer WHERE username = %s AND password = %s', (username, password))
+            elif login_type == 'vendor':
+                cursor.execute('SELECT * FROM Vender WHERE vname = %s AND password = %s', (username, password))
+
+            # Fetch one record and return result
+            account = cursor.fetchone()
+            print(account)
+            # If account exists in accounts table in out database
+            if account:
+                session['loggedin'] = True
+                if login_type == 'customer':
+                    session['customer_name'] = account[3]#['customer_name']
+                    return redirect(url_for('customer_page'))
+                # Create session data, we can access this data in other routes
+                elif login_type == 'vendor':
+                    session['vendor_name'] = account[1]#['vname']
+
+    # Show the login form with message (if any)
+    return render_template('index.html', msg=msg)
 
 if __name__ == '__main__':
     app.run(debug=True)

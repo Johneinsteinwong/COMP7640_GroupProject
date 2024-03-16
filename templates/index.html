@@ -18,7 +18,7 @@
 				<a href=# id="register_link">Register</a>
 			</div>
 
-			<form action="{{ url_for('login') }}" method="post">
+			<form action="{{ url_for('login') }}" method="post" id="login_form">
 
 				<select name="usertype", title="usertype", id="usertype" required>
 					<option value="customer" id="type_customer">Customer</option>
@@ -35,6 +35,29 @@
 				<input type="password" name="password" placeholder="Password" id="password" required>
 				<div class="msg">{{ msg }}</div>
 				<input type="submit" value="Login">
+			</form>
+
+			<form action="{{ url_for('register') }}" method="post" id="register_form">
+
+				<select name="usertype", title="usertype", id="reg_usertype" required>
+					<option value="customer" id="reg_type_customer">Customer</option>
+					<option value="vendor" id="reg_type_vendor">Vendor</option>
+				</select>
+				
+				<label for="reg_username">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="username" placeholder="Your username" id="reg_username" required>
+				<label for="reg_password">
+					<i class="fas fa-lock"></i>
+				</label>
+				<input type="password" name="password" placeholder="Your Password" id="reg_password" required>
+				<label for="reg_re_password">
+					<i class="fas fa-lock"></i>
+				</label>
+				<input type="password" name="reg_re_password" placeholder="Confirm Password" id="reg_re_password" required>
+				<div class="msg">{{ msg }}</div>
+				<input type="submit" value="Register">
 			</form>
 
 			<!-- TODO: Doing register function -->
