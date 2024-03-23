@@ -70,18 +70,18 @@
 						<i class="fas fa-lock"></i>
 					</label>
 					<input type="password" name="reg_re_password" placeholder="Confirm Password" id="reg_re_password" required>
-					<div class="msg">{{ msg }}</div>
-					<input type="submit" value="Register">
-
+					
 					<label for="reg_phone">
 						<i class="fas fa-phone"></i>
 					</label>
 					<input type="text" name="reg_phone" placeholder="Your phone" id="reg_phone" required>
 
-					<label for="reg_ship">
+					<label for="reg_loc">
 						<i class="fas fa-loc"></i>
 					</label>
-					<input type="text" name="reg_ship" placeholder="Your location" id="reg_ship" required>
+					<input type="text" name="reg_loc" placeholder="Your location" id="reg_loc" required>
+					<div class="msg">{{ msg }}</div>
+					<input type="submit" value="Register">
 				</form>
 			{% endif %}
 		</div>

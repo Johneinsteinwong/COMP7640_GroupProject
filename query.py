@@ -21,7 +21,7 @@ def checkUsername():
 
 # Onboard new vendors onto the marketplace
 def addVendor():
-    password = sha256(str.encode(password + str(salt))).hexdigest()
+    # password = sha256(str.encode(password + str(salt))).hexdigest()
     sql = '''
     INSERT INTO Vendor(vname, geographic, password, salt)
     VALUES (%s,%s,%s,%s)
@@ -29,7 +29,7 @@ def addVendor():
     return sql
 
 def addCustomer():
-    password = sha256(str.encode(password + str(salt))).hexdigest()
+    # password = sha256(str.encode(password + str(salt))).hexdigest()
     sql = '''
     INSERT INTO Customer(contactNumber, shippingDetail, username, password, salt)
     VALUES (%s,%s,%s,%s,%s)

@@ -173,6 +173,8 @@ def register():
 
             username = request.form['reg_username']
             password = request.form['reg_password']
+            phone = request.form['reg_phone']
+            loc = request.form['reg_loc']
 
             usertype = request.form.get('reg_usertype')
 
@@ -183,22 +185,24 @@ def register():
 
             # Detect which type of user is logging in
             if usertype == 'customer':
-                cursor.execute('SELECT * FROM Customer WHERE username = %s AND password = %s', (username, password))
+                cursor.execute(query.addCustomer(), (phone, loc, username, password, '1'))
+                mysql.commit()
             elif usertype == 'vendor':
-                cursor.execute(query.addVendor, (username, password))
-
-            # Fetch one record and return result
-            account = cursor.fetchone()
-            print(account)
-            # If account exists in accounts table in out database
-            if account:
-                session['loggedin'] = True
-                if login_type == 'customer':
-                    session['customer_name'] = account[3]#['customer_name']
-                    return redirect(url_for('customer_page'))
-                # Create session data, we can access this data in other routes
-                elif login_type == 'vendor':
-                    session['vendor_name'] = account[1]#['vname']
+                cursor.execute(query.addVendor(), (username, loc, password, '1'))
+                mysql.commit()
+            msg = 'Congras! Now you are one of the user'
+            # # Fetch one record and return result
+            # account = cursor.fetchone()
+            # print(account)
+            # # If account exists in accounts table in out database
+            # if account:
+            #     session['loggedin'] = True
+            #     if login_type == 'customer':
+            #         session['customer_name'] = account[3]#['customer_name']
+            #         return redirect(url_for('customer_page'))
+            #     # Create session data, we can access this data in other routes
+            #     elif login_type == 'vendor':
+            #         session['vendor_name'] = account[1]#['vname']
 
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg, register_activate=register_activate, login_activate="")
