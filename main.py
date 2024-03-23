@@ -161,6 +161,10 @@ def login():
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg, login_activate=login_activate, register_activate="")
 
+@app.route('/products', methods=['GET', 'POST'])
+def products():
+    return render_template('products.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     msg = ''
