@@ -13,6 +13,7 @@ import query
 # different, you can specify your name, password and database in the
 # database_login_user
 
+# comment here
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = database_login_user.name
