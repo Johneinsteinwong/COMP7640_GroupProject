@@ -39,6 +39,7 @@ def check_username():
         return {'is_taken': True}
     return {'is_taken': False}
 
+
 # Page represent function
 # Kinney route
 @app.route('/vAdminHome')
@@ -170,13 +171,10 @@ def register():
         else:
             # TODO: Input the message into the database
 
-            username = request.form['username']
-            password = request.form['password']
+            username = request.form['reg_username']
+            password = request.form['reg_password']
 
-            login_type = request.form.get('reg_usertype')
-
-
-            # print(request.form.get('usertype'))
+            usertype = request.form.get('reg_usertype')
 
             password = sha256(str.encode(password + str(1))).hexdigest()
 
@@ -184,10 +182,10 @@ def register():
             cursor = mysql.cursor()#.connection.cursor(MySQLdb.cursors.DictCursor)
 
             # Detect which type of user is logging in
-            if login_type == 'customer':
+            if usertype == 'customer':
                 cursor.execute('SELECT * FROM Customer WHERE username = %s AND password = %s', (username, password))
-            elif login_type == 'vendor':
-                cursor.execute('SELECT * FROM Vender WHERE vname = %s AND password = %s', (username, password))
+            elif usertype == 'vendor':
+                cursor.execute(query.addVendor, (username, password))
 
             # Fetch one record and return result
             account = cursor.fetchone()

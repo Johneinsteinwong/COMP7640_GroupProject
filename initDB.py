@@ -11,7 +11,7 @@ db = pymysql.connect(host='localhost',
 cursor = db.cursor()
  
 
-cursor.execute("DROP TABLE IF EXISTS Customer, Vender, Product, Ordered, vAdmin;")
+cursor.execute("DROP TABLE IF EXISTS Customer, Vendor, Product, Ordered, vAdmin;")
 
 sql_customer = '''
     CREATE TABLE Customer(
@@ -24,8 +24,8 @@ sql_customer = '''
         PRIMARY KEY(cid)
     );
 '''
-sql_vender = '''
-    CREATE TABLE Vender(
+sql_Vendor = '''
+    CREATE TABLE Vendor(
         vid INTEGER NOT NULL AUTO_INCREMENT,
         vname CHAR(20) NOT NULL,
         score INTEGER,
@@ -46,7 +46,7 @@ sql_product = '''
         tag2 CHAR(20),
         tag3 CHAR(20),
         PRIMARY KEY(pid),
-        FOREIGN KEY(vid) REFERENCES Vender(vid) 
+        FOREIGN KEY(vid) REFERENCES Vendor(vid) 
             ON DELETE CASCADE
             ON UPDATE CASCADE
     );
@@ -64,7 +64,7 @@ sql_order = '''
         FOREIGN KEY(pid) REFERENCES Product(pid)
     );
 '''
-sql_vender_admin = '''
+sql_Vendor_admin = '''
     CREATE TABLE vAdmin(
         id INTEGER NOT NULL AUTO_INCREMENT,
         username VARCHAR(50) NOT NULL,
@@ -75,10 +75,10 @@ sql_vender_admin = '''
 '''
 try:
     cursor.execute(sql_customer)
-    cursor.execute(sql_vender)
+    cursor.execute(sql_Vendor)
     cursor.execute(sql_product)
     cursor.execute(sql_order)
-    cursor.execute(sql_vender_admin)
+    cursor.execute(sql_Vendor_admin)
     print ('Table created')
 except ValueError as e:
     print(e)

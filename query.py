@@ -20,14 +20,21 @@ def checkUsername():
     return sql
 
 # Onboard new vendors onto the marketplace
-def addVendor(vname, geographic, password, salt):
+def addVendor():
     password = sha256(str.encode(password + str(salt))).hexdigest()
     sql = '''
-    INSERT INTO Vender(vname, geographic, password, salt)
+    INSERT INTO Vendor(vname, geographic, password, salt)
     VALUES (%s,%s,%s,%s)
     '''
-    cursor.execute(sql,(vname, geographic, password, salt))
-    db.commit()
+    return sql
+
+def addCustomer():
+    password = sha256(str.encode(password + str(salt))).hexdigest()
+    sql = '''
+    INSERT INTO Customer(contactNumber, shippingDetail, username, password, salt)
+    VALUES (%s,%s,%s,%s,%s)
+    '''
+    return sql
 
 def customerProducts():
     sql = '''
@@ -43,14 +50,14 @@ def customerProducts():
     return sql
 # Browse all products offered by a specific vendor
 #SELECT * FROM
-#(SELECT * FROM Product, Vender
-#WHERE Product.vid = Vender.vid)
+#(SELECT * FROM Product, Vendor
+#WHERE Product.vid = Vendor.vid)
 #WHERE vname = ?
 def browseAllProducts(vname):
     sql = '''
     WITH TMP AS 
-        (SELECT * FROM Product, Vender
-        WHERE Product.vid = Vender.vid)
+        (SELECT * FROM Product, Vendor
+        WHERE Product.vid = Vendor.vid)
     SELECT * FROM TMP
     WHERE vname = %s
     '''
