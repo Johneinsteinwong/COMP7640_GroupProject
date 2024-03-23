@@ -28,6 +28,18 @@ mysql = pymysql.connect(
     db = app.config['MYSQL_DB']
 )
 
+# Functional check method
+@app.route('/check_username', methods=['POST'])
+def check_username():
+    username = request.json['username']
+    cursor = mysql.cursor()
+    cursor.execute(query.checkUsername(), (username,))
+    data = cursor.fetchone()
+    if data:
+        return {'is_taken': True}
+    return {'is_taken': False}
+
+# Page represent function
 # Kinney route
 @app.route('/vAdminHome')
 # John app route
@@ -154,7 +166,7 @@ def register():
     register_activate = "active"
     if request.method == 'POST' and 'reg_username' in request.form and 'reg_password' in request.form:
         if request.form.get('reg_password') != request.form.get('reg_re_password'):
-            msg('Fuck you, what you are fucking doing?')
+            msg = 'Fuck you, what you are fucking doing?'
         else:
             # TODO: Input the message into the database
 
@@ -192,6 +204,8 @@ def register():
 
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg, register_activate=register_activate, login_activate="")
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

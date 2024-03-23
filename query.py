@@ -13,6 +13,12 @@ cursor = db.cursor()
 
 # TODO: Change the following functions from in-function execute to return the sql string
 
+def checkUsername():
+    sql = '''
+    SELECT * FROM Customer
+    WHERE username = %s '''
+    return sql
+
 # Onboard new vendors onto the marketplace
 def addVendor(vname, geographic, password, salt):
     password = sha256(str.encode(password + str(salt))).hexdigest()
