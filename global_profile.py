@@ -11,8 +11,10 @@ class SqlAdmin:
         self.database = database
 
 # Kinney user
-database_login_user = SqlAdmin('root', '321Misaka@khq', 'ecommerce')
+# database_login_user = SqlAdmin('root', '321Misaka@khq', 'ecommerce')
 
 # John user
 # database_login_user = SqlAdmin('test', '1234567890-=', 'ecommerce')
+
+database_login_user = SqlAdmin('root', '2242Lwy!', 'ecommerce')
         
