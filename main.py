@@ -39,6 +39,17 @@ def check_username():
         return {'is_taken': True}
     return {'is_taken': False}
 
+@app.route('/add_product', methods=['POST'])
+def add_product():
+    pname = request.json['pname']
+    price = request.json['price']
+    vid = request.json['vid']
+    inventory = request.json['inventory']
+    cursor = mysql.cursor()
+    cursor.execute(query.addProduct(), (pname, price, vid, inventory))
+    mysql.commit()
+    return {'success': True}
+
 
 # Page represent function
 # Kinney route
@@ -163,7 +174,10 @@ def login():
 
 @app.route('/products', methods=['GET', 'POST'])
 def products():
-    return render_template('products.html')
+    cursor = mysql.cursor()
+    cursor.execute(query.browseAllProducts())
+    data = cursor.fetchall()
+    return render_template('products.html', data=data)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

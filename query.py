@@ -19,6 +19,13 @@ def checkUsername():
     WHERE username = %s '''
     return sql
 
+def browseAllProducts():
+    sql = '''
+    SELECT * FROM Product
+    '''
+    return sql
+
+
 # Onboard new vendors onto the marketplace
 def addVendor():
     # password = sha256(str.encode(password + str(salt))).hexdigest()
@@ -36,7 +43,16 @@ def addCustomer():
     '''
     return sql
 
-def customerProducts():
+# Introduce new products to a vendor's catalog
+def addProduct(pname, price, vid, inventory):
+    sql = '''
+    INSERT INTO Product(pname, price, vid, inventory) 
+    VALUES (%s,%s,%s,%s)
+    '''
+    cursor.execute(sql,(pname, price, vid, inventory))
+    db.commit()
+
+def browseAllProductsByCustomer():
     sql = '''
     WITH TMP AS
         (SELECT Ordered.*, pname FROM Ordered INNER JOIN Product 
@@ -48,12 +64,9 @@ def customerProducts():
     '''
     # cursor.execute(sql,(cname,))
     return sql
+
 # Browse all products offered by a specific vendor
-#SELECT * FROM
-#(SELECT * FROM Product, Vendor
-#WHERE Product.vid = Vendor.vid)
-#WHERE vname = ?
-def browseAllProducts(vname):
+def browseAllProductsByVendor():
     sql = '''
     WITH TMP AS 
         (SELECT * FROM Product, Vendor
@@ -61,20 +74,9 @@ def browseAllProducts(vname):
     SELECT * FROM TMP
     WHERE vname = %s
     '''
-    cursor.execute(sql,(vname,))
-    db.commit()
-
-
-# Introduce new products to a vendor's catalog
-def addProduct(pname, price, vid, inventory):
-    sql = '''
-    INSERT INTO Product(pname, price, vid, inventory) 
-    VALUES (%s,%s,%s,%s)
-    '''
-    cursor.execute(sql,(pname, price, vid, inventory))
-    db.commit()
+    # cursor.execute(sql,(vname,))
+    return sql
   
-
 
 # Facilitate a search feature that allows users to discover products using tags, 
 # the search should return products where the tag matches any part of the product's
