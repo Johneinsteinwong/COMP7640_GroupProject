@@ -13,6 +13,7 @@ cursor = db.cursor()
 
 # TODO: Change the following functions from in-function execute to return the sql string
 
+# Check class function
 def checkUsername():
     sql = '''
     SELECT * FROM Customer
@@ -25,32 +26,17 @@ def browseAllProducts():
     '''
     return sql
 
-
-# Onboard new vendors onto the marketplace
-def addVendor():
-    # password = sha256(str.encode(password + str(salt))).hexdigest()
+# Browse all products offered by a specific vendor
+def browseAllProductsByVendor():
     sql = '''
-    INSERT INTO Vendor(vname, geographic, password, salt)
-    VALUES (%s,%s,%s,%s)
+    WITH TMP AS 
+        (SELECT * FROM Product, Vendor
+        WHERE Product.vid = Vendor.vid)
+    SELECT * FROM TMP
+    WHERE vname = %s
     '''
+    # cursor.execute(sql,(vname,))
     return sql
-
-def addCustomer():
-    # password = sha256(str.encode(password + str(salt))).hexdigest()
-    sql = '''
-    INSERT INTO Customer(contactNumber, shippingDetail, username, password, salt)
-    VALUES (%s,%s,%s,%s,%s)
-    '''
-    return sql
-
-# Introduce new products to a vendor's catalog
-def addProduct(pname, price, vid, inventory):
-    sql = '''
-    INSERT INTO Product(pname, price, vid, inventory) 
-    VALUES (%s,%s,%s,%s)
-    '''
-    cursor.execute(sql,(pname, price, vid, inventory))
-    db.commit()
 
 def browseAllProductsByCustomer():
     sql = '''
@@ -65,18 +51,44 @@ def browseAllProductsByCustomer():
     # cursor.execute(sql,(cname,))
     return sql
 
-# Browse all products offered by a specific vendor
-def browseAllProductsByVendor():
+def getVid():
     sql = '''
-    WITH TMP AS 
-        (SELECT * FROM Product, Vendor
-        WHERE Product.vid = Vendor.vid)
-    SELECT * FROM TMP
+    SELECT vid FROM Vendor
     WHERE vname = %s
     '''
-    # cursor.execute(sql,(vname,))
     return sql
-  
+# Check class function end
+# =================================================================================================
+
+# Update class function
+# Onboard new vendors onto the marketplace
+def addVendor():
+    # password = sha256(str.encode(password + str(salt))).hexdigest()
+    sql = '''
+    INSERT INTO Vendor(vname, score, geographic, password, salt)
+    VALUES (%s,%s,%s,%s,%s)
+    '''
+    return sql
+
+def addCustomer():
+    # password = sha256(str.encode(password + str(salt))).hexdigest()
+    sql = '''
+    INSERT INTO Customer(contactNumber, shippingDetail, username, password, salt)
+    VALUES (%s,%s,%s,%s,%s)
+    '''
+    return sql
+
+# Introduce new products to a vendor's catalog
+def addProduct():
+    sql = '''
+    INSERT INTO Product(pname, price, vid, inventory, tag1, tag2, tag3, url) 
+    VALUES (%s,%s,%s,%s, %s, %s, %s, %s)
+    '''
+    return sql
+# Update class function end
+# =================================================================================================
+
+
 
 # Facilitate a search feature that allows users to discover products using tags, 
 # the search should return products where the tag matches any part of the product's

@@ -1,6 +1,7 @@
 import pymysql
 from global_profile import database_login_user
 import query
+from hashlib import sha256
 
 db = pymysql.connect(host='localhost',
                      user=database_login_user.name,
@@ -28,9 +29,9 @@ sql_customer = '''
 sql_Vendor = '''
     CREATE TABLE Vendor(
         vid INTEGER NOT NULL AUTO_INCREMENT,
-        vname CHAR(20) NOT NULL,
+        vname CHAR(100) NOT NULL,
         score INTEGER,
-        geographic CHAR(20) NOT NULL,
+        geographic CHAR(100) NOT NULL,
         password CHAR(255) NOT NULL,
         salt INTEGER NOT NULL,
         PRIMARY KEY(vid)
@@ -39,13 +40,14 @@ sql_Vendor = '''
 sql_product = '''
     CREATE TABLE Product(
         pid INTEGER NOT NULL AUTO_INCREMENT,
-        pname CHAR(20) NOT NULL,
+        pname CHAR(100) NOT NULL,
         price REAL NOT NULL,
         vid INTEGER NOT NULL,
         inventory INTEGER NOT NULL,
-        tag1 CHAR(20),
-        tag2 CHAR(20),
-        tag3 CHAR(20),
+        tag1 CHAR(50),
+        tag2 CHAR(50),
+        tag3 CHAR(50),
+        url CHAR(255),
         PRIMARY KEY(pid),
         FOREIGN KEY(vid) REFERENCES Vendor(vid) 
             ON DELETE CASCADE
@@ -82,23 +84,70 @@ try:
     cursor.execute(sql_Vendor_admin)
     print ('Table created')
 
-    cursor.execute(query.addVendor(), ('V001', 'Apple', 'apple2024', 4.9, 'California, USA',))
-    cursor.execute(query.addVendor(), ('V002', 'Samsung', 'samsung2024', 4.8, 'Seoul, Korea'))
-    cursor.execute(query.addVendor(), ('V003', 'Xiaomi', 'xiaomi2024', 4.7, 'Beijing, China'))
-    cursor.execute(query.addVendor(), ('V004', 'Huawei', 'huawei2024', 4.6, 'Shenzhen, China'))
-    cursor.execute(query.addProduct(), ('P001', 'iPhone 13', 999.99, 'V001', 100, 'smartphone', 'apple', 'ios'))
-    cursor.execute(query.addProduct(), ('P002', 'Galaxy S21', 899.99, 'V002', 100, 'smartphone', 'samsung', 'android'))
-    cursor.execute(query.addProduct(), ('P003', 'Mi 11', 799.99, 'V003', 100, 'smartphone', 'xiaomi', 'android'))
-    cursor.execute(query.addProduct(), ('P004', 'P50', 699.99, 'V004', 100, 'smartphone', 'huawei', 'android'))
-    cursor.execute(query.addProduct(), ('P005', 'MacBook Pro', 1999.99, 'V001', 100, 'laptop', 'apple', 'macos'))
-    cursor.execute(query.addProduct(), ('P006', 'Galaxy Book Pro', 1799.99, 'V002', 100, 'laptop', 'samsung', 'windows'))
-    cursor.execute(query.addProduct(), ('P007', 'Mi Notebook Pro', 1599.99, 'V003', 100, 'laptop', 'xiaomi', 'windows'))
-    cursor.execute(query.addProduct(), ('P008', 'MateBook X Pro', 1499.99, 'V004', 100, 'laptop', 'huawei', 'windows'))
-    cursor.execute(query.addProduct(), ('P009', 'AirPods Pro', 199.99, 'V001', 100, 'earphone', 'apple', 'ios'))
-    cursor.execute(query.addProduct(), ('P010', 'Galaxy Buds Pro', 179.99, 'V002', 100, 'earphone', 'samsung', 'android'))
-    cursor.execute(query.addProduct(), ('P011', 'Mi True Wireless Earbuds', 159.99, 'V003', 100, 'earphone', 'xiaomi', 'android'))
-    cursor.execute(query.addProduct(), ('P012', 'FreeBuds 4', 139.99, 'V004', 100, 'earphone', 'huawei', 'android'))
-    cursor.execute(query.addProduct(), ('P013', 'iPad Pro', 799.99, 'V001', 100, 'tablet', 'apple', 'ios'))
+    apple_password = 'apple2024'
+    samsung_password = 'samsung2024'
+    xiaomi_password = 'xiaomi2024'
+    huawei_password =  'huawei2024'
+    nvidia_password = 'nvidia2024'
+    amd_password = 'amd2024'
+    # TODO: Need to update the salt here
+    apple_hashed_password = sha256(str.encode(apple_password + str(1))).hexdigest()
+    samsung_hashed_password = sha256(str.encode(samsung_password + str(1))).hexdigest()
+    xiaomi_hashed_password = sha256(str.encode(xiaomi_password + str(1))).hexdigest()
+    huawei_hashed_password = sha256(str.encode(huawei_password + str(1))).hexdigest()
+    nvidia_hashed_password = sha256(str.encode(nvidia_password + str(1))).hexdigest()
+    amd_hashed_password = sha256(str.encode(amd_password + str(1))).hexdigest()
+
+    cursor.execute(query.addVendor(), ('Apple', 4.9, 'California, USA', apple_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Samsung', 4.8, 'Seoul, Korea', samsung_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Xiaomi', 4.7, 'Beijing, China', xiaomi_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Huawei', 4.6, 'Shenzhen, China', huawei_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Nvidia', 4.9, 'California, USA', nvidia_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('AMD', 4.8, 'California, USA', amd_hashed_password, 1))
+
+    cursor.execute(query.getVid(), ('Apple',))
+    apple_vid = cursor.fetchone()[0]
+    cursor.execute(query.getVid(), ('Samsung',))
+    samsung_vid = cursor.fetchone()[0]
+    cursor.execute(query.getVid(), ('Xiaomi',))
+    xiaomi_vid = cursor.fetchone()[0]
+    cursor.execute(query.getVid(), ('Huawei',))
+    huawei_vid = cursor.fetchone()[0]
+    cursor.execute(query.getVid(), ('Nvidia',))
+    nvidia_vid = cursor.fetchone()[0]
+    cursor.execute(query.getVid(), ('AMD',))
+    amd_vid = cursor.fetchone()[0]
+
+    cursor.execute(query.addProduct(), ('iPhone 13', 999.99, apple_vid, 100, 'smartphone', 'apple', 'ios', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Galaxy S21', 899.99, samsung_vid, 100, 'smartphone', 'samsung', 'android', 'https://m.media-amazon.com/images/I/61nLJolp1rL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Mi 11', 799.99, xiaomi_vid, 100, 'smartphone', 'xiaomi', 'android', 'https://m.media-amazon.com/images/I/517JD64MdxL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('P40', 699.99, huawei_vid, 100, 'smartphone', 'huawei', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('iMac', 1999.99, apple_vid, 100, 'desktop', 'apple', 'ios', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Galaxy Book', 1799.99, samsung_vid, 100, 'laptop', 'samsung', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Mi Pad', 1599.99, xiaomi_vid, 100, 'tablet', 'xiaomi', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('MatePad', 1399.99, huawei_vid, 100, 'tablet', 'huawei', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('AirPods', 199.99, apple_vid, 100, 'earphone', 'apple', 'ios', ''))
+    cursor.execute(query.addProduct(), ('Galaxy Buds', 179.99, samsung_vid, 100, 'earphone', 'samsung', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Mi Earbuds', 159.99, xiaomi_vid, 100, 'earphone', 'xiaomi', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('FreeBuds', 139.99, huawei_vid, 100, 'earphone', 'huawei', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Apple Watch', 299.99, apple_vid, 100, 'watch', 'apple', 'ios', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Galaxy Watch', 279.99, samsung_vid, 100, 'watch', 'samsung', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Mi Watch', 259.99, xiaomi_vid, 100, 'watch', 'xiaomi', 'android', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
+    cursor.execute(query.addProduct(), ('Watch GT', 239.99, huawei_vid, 100, 'watch', 'huawei', 'android', ''))
+    cursor.execute(query.addProduct(), ('MacBook Pro', 2999.99, apple_vid, 100, 'laptop', 'apple', 'ios', ''))
+    cursor.execute(query.addProduct(), ('Galaxy Tab', 2799.99, samsung_vid, 100, 'tablet', 'samsung', 'android', ''))
+    cursor.execute(query.addProduct(), ('Mi Pad Pro', 2599.99, xiaomi_vid, 100, 'tablet', 'xiaomi', 'android', ''))
+    cursor.execute(query.addProduct(), ('MatePad Pro', 2399.99, huawei_vid, 100, 'tablet', 'huawei', 'android', ''))
+    cursor.execute(query.addProduct(), ('Mac Mini', 699.99, apple_vid, 100, 'desktop', 'apple', 'ios', ''))
+    cursor.execute(query.addProduct(), ('Galaxy Book Pro', 599.99, samsung_vid, 100, 'laptop', 'samsung', 'android', ''))
+    cursor.execute(query.addProduct(), ('Mi Notebook', 499.99, xiaomi_vid, 100, 'laptop', 'xiaomi', 'android', ''))
+    cursor.execute(query.addProduct(), ('MateBook', 399.99, huawei_vid, 100, 'laptop', 'huawei', 'android', ''))
+    cursor.execute(query.addProduct(), ('GeForce RTX 3090', 1499.99, nvidia_vid, 100, 'graphics card', 'nvidia', 'nvidia rtx', ''))
+    cursor.execute(query.addProduct(), ('Radeon RX 6900 XT', 1299.99, amd_vid, 100, 'graphics card', 'amd', 'amd radeon', ''))
+    cursor.execute(query.addProduct(), ('GeForce RTX 4090', 1999.99, nvidia_vid, 100, 'graphics card', 'nvidia', 'nvidia rtx', ''))
+    cursor.execute(query.addProduct(), ('Radeon RX 7900 XT', 1799.99, amd_vid, 100, 'graphics card', 'amd', 'amd radeon', ''))
+    cursor.execute(query.addProduct(), ('NVIDIA A100 Tensor Core GPU', 2999.99, nvidia_vid, 100, 'graphics card', 'nvidia', 'nvidia a100', ''))
+    cursor.execute(query.addProduct(), ('Radeon Pro VII', 2799.99, amd_vid, 100, 'graphics card', 'amd', 'amd radeon', ''))
     db.commit()
 except ValueError as e:
     print(e)
