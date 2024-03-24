@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-   <head>  
+   <head>
       <!-- Basic -->
       <meta charset="utf-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -19,7 +19,7 @@
       <!-- Custom styles for this template -->
       <link href="../static/css/style.css" rel="stylesheet" />
       <!-- responsive style -->
-      <link href="../static/css/responsive.css" rel="stylesheet" />
+      <link href="css/responsive.css" rel="stylesheet" />
    </head>
    <body class="sub_page">
       <div class="hero_area">
@@ -126,8 +126,7 @@
             <div class="row">
                <div class="col-md-12">
                   <div class="full">
-                     <!--add product-->
-                     <h3>Product Catalog Management</h3>
+                     <h3>Contact us</h3>
                   </div>
                </div>
             </div>
@@ -141,34 +140,14 @@
             <div class="row">
                <div class="col-lg-8 offset-lg-2">
                   <div class="full">
-                     <!--dyn add product-->
-                     <form action="/add_product">
+                     <form action="index.html">
                         <fieldset>
-                           <legend>Product description:</legend>
-                           
-                           <label for="name">Product Name:</label> <br>
-                           <input type="text" placeholder="Enter product name" name="name" required /> <br>
-                           <label for="price">Price:</label> <br>
-                           <input type="text" placeholder="Enter price" name="price" required /> <br>                           
-                           <label for="inventory">Quantity for stock:</label> <br>
-                           <input type="text" placeholder="Enter quantity" name="inventory" required /> <br>
-                           <label for="tag">Enter 3 tags for searching the product:</label> <br>
-                           <label for = "tag1">Tag 1:</label> <br>
-                           <input type= "text" placeholder="Enter tag" name="tag1" required></input> <br>
-                           <label for = "tag2">Tag 2:</label> <br>
-                           <input type= "text" placeholder="Enter tag" name="tag2" required></input> <br>
-                           <label for = "tag3">Tag 3:</label> <br>
-                           <input type= "text" placeholder="Enter tag" name="tag3" required></input> <br>
-                           <label for="image">Image:</label> <br>
-                           <input type="file" name="image" required /> <br>                                                   
-                           <div class="button-group">  
-                           <input type="cancel" value="Cancel" />                         
-                           <input type="reset" value="Reset" />
+                           <input type="text" placeholder="Enter your full name" name="name" required />
+                           <input type="email" placeholder="Enter your email address" name="email" required />
+                           <input type="text" placeholder="Enter subject" name="subject" required />
+                           <textarea placeholder="Enter your message" required></textarea>
                            <input type="submit" value="Submit" />
-                           </div>
-
                         </fieldset>
-                       
                      </form>
                   </div>
                </div>
