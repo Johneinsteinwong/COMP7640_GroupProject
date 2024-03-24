@@ -126,7 +126,7 @@
             <div class="row">
                <div class="col-md-12">
                   <div class="full">
-                     <h3>Contact us</h3>
+                     <h3>Vendor Management</h3>
                   </div>
                </div>
             </div>
@@ -140,13 +140,21 @@
             <div class="row">
                <div class="col-lg-8 offset-lg-2">
                   <div class="full">
-                     <form action="index.html">
+                     <form action="/add_vendor">
                         <fieldset>
-                           <input type="text" placeholder="Enter your full name" name="name" required />
-                           <input type="email" placeholder="Enter your email address" name="email" required />
-                           <input type="text" placeholder="Enter subject" name="subject" required />
-                           <textarea placeholder="Enter your message" required></textarea>
+                           <legend>Vendor description:</legend>
+                           
+                           <label for="name">Business Name:</label> <br>
+                           <input type="text" placeholder="Enter business name" name="name" required /> <br>
+                           <label for ="geographic presence">Geographic Presence:</label> <br>
+                           <input type="text" placeholder="Enter geographic presence" name="geographic presence" required /> <br>
+
+                           <div class="button-group">  
+                           <input type="cancel" value="Cancel" />                         
+                           <input type="reset" value="Reset" />
                            <input type="submit" value="Submit" />
+                           </div>
+
                         </fieldset>
                      </form>
                   </div>
