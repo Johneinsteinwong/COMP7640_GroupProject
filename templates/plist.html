@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-   <!--This is a page for broswing vendor list and  add/delete/edit new vendor by database adminstrator-->
    <head>
       <!-- Basic -->
       <meta charset="utf-8" />
@@ -141,27 +140,47 @@
             <div class="row">
                <div class="col-lg-8 offset-lg-2">
                   <div class="full">
-                     <form action="/add_vendor">
-                        <fieldset>
-                           <legend>Vendor description:</legend>
+                     <legend> A Vendor List:</legend>
+                     
+                     <!--A table -->
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Vendor ID</th>
+                              <th>Business Name</th>
+                              <th>Vendor Profile</th>                                  
+                              <th>Vendor Product</th>                                              
+                              
+                           </tr>
+                        </thead>
+                        <tbody>
                            
-                           <label for="name">Business Name:</label> <br>
-                           <input type="text" placeholder="Enter business name" name="name" required /> <br>
+                           <!-- Django template for loop to iterate over vendors will go here -->                         
+                              {% for vendor in vendors %}
+                                 <tr>
+                                    <td>{{ vid }}</td>                              
+                                    <td>{{ vname }}</td>                                    
+                                    <td><a href="vprofile.html">View</a></td> #Link to vendor profile page
+                                    <td><a href="vproduct.html">View</a></td> #Link to vendor product page
+                                 
+                                 </tr>
+                              {% endfor %}
                            
-                           <label for ="geographic presence">Geographic Presence:</label> <br>
-                           <input type="text" placeholder="Enter geographic presence" name="geographic presence" required /> <br>
-                           <label for ="inventory"> Product:</label> 
-                           <a href="vproduct.html">"View"</a> <br>
-                           <!--vendor ID and score will be generated automatically later while a new vendor is creating -->
-                           <div class="button-group">  
-                           <input type="cancel" value="Back" />                         
-                           <input type="reset" value="Reset" />
-                           <input type="submit" value="Submit" />
-                           </div>
+                        </tbody>
+                     </table>
 
-                        </fieldset>
-                     </form>
+                     <!-- Suggestion by Copilot for using Django
+                     from django.shortcuts import render
+                     from .models import Vendor
 
+                     def vendor_list(request):
+                        vendors = Vendor.objects.all()
+                        return render(request, 'vlist.html', {'vendors': vendors})-->
+                     <div class="container">   
+                     <a href="Add_vendor.html" class="btn btn-primary">Add Vendor</a>                     
+                     <a href="delete_vendor.html" class="btn btn-primary">Delete Vendor</a>                  
+                     </div>
+                         
                   </div>
                </div>
             </div>

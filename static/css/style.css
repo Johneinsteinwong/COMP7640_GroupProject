@@ -1124,10 +1124,27 @@ form input[type="reset"] {
   font-weight: 600;
   transition: ease all 0.1s;
 } 
+
 .button-group {
   display: flex;
   justify-content: space-between;
 }
+
+form button[type="button"] {
+  border: none;
+  padding: 15px 45px;
+  width: 150px;  /* Set a fixed width */
+  height: 50px;  /* Set a fixed height */
+  font-size: 16px;
+  text-transform: capitalize;
+  line-height: normal;
+  margin: 0 auto;
+  display: flex;
+  background: #e93942;
+  color: #fff;
+  font-weight: 600;
+  transition: ease all 0.1s;
+} 
 
 
 
@@ -1159,8 +1176,64 @@ form input[type="submit"]:focus {
     font-size: 15px;
     font-weight: 400;
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #007BFF;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.vendor-profile {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.vendor-profile h1 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.vendor-profile p {
+  color: #666;
+  line-height: 1.6;
+}
 
 http://kute-themes.com/html/boutique/html/index.html
 https://template.hasthemes.com/noraure/noraure/index.html
 https://preview.hasthemes.com/xoss-preview/xoss/index.html
-

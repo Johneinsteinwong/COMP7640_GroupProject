@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-   <!--This is a page for broswing vendor list and  add/delete/edit new vendor by database adminstrator-->
+   <!--this is a page for editing his own profoilo by vendor -->
    <head>
       <!-- Basic -->
       <meta charset="utf-8" />
@@ -141,27 +141,31 @@
             <div class="row">
                <div class="col-lg-8 offset-lg-2">
                   <div class="full">
-                     <form action="/add_vendor">
+                     <form action="/edit_vendor">
                         <fieldset>
                            <legend>Vendor description:</legend>
+                           <label for="vid">Vendor ID:</label> <br>
                            
+                           <input type="text" name="vendor_id" value="{{ vid }}" readonly /> <br>
+                        
+
                            <label for="name">Business Name:</label> <br>
                            <input type="text" placeholder="Enter business name" name="name" required /> <br>
-                           
+                           <label for="socre">Customer Feedback Score: </label><br>
+                           <input type="text" placeholder="Nulll" name="score" value ="" readonly /> <br>
                            <label for ="geographic presence">Geographic Presence:</label> <br>
                            <input type="text" placeholder="Enter geographic presence" name="geographic presence" required /> <br>
-                           <label for ="inventory"> Product:</label> 
-                           <a href="vproduct.html">"View"</a> <br>
-                           <!--vendor ID and score will be generated automatically later while a new vendor is creating -->
+                           <label for ="inventory"> Inventory of Product:</label> <br>
+                           
                            <div class="button-group">  
-                           <input type="cancel" value="Back" />                         
+                           <button type="button" onclick="history.back();">Back</button>
+                           <!--<input type="cancel" value="Cancel"/>-->                 
                            <input type="reset" value="Reset" />
                            <input type="submit" value="Submit" />
                            </div>
 
                         </fieldset>
                      </form>
-
                   </div>
                </div>
             </div>
