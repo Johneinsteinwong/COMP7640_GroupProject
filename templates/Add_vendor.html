@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+   <!--this is a page for creating a new vendor profoilo-->
    <head>
       <!-- Basic -->
       <meta charset="utf-8" />
@@ -143,11 +144,15 @@
                      <form action="/add_vendor">
                         <fieldset>
                            <legend>Vendor description:</legend>
-                           
+                           <label for="vid">Vendor ID:</label> <br>
+                           <Input type="text" placeholder="Enter vendor ID" name="vendor_id" required /> <br>
                            <label for="name">Business Name:</label> <br>
                            <input type="text" placeholder="Enter business name" name="name" required /> <br>
+                           <label for="socre">Customer Feedback Score: </label><br>
+                           <input type="text" placeholder="Nulll" name="score" value ="" required /> <br>
                            <label for ="geographic presence">Geographic Presence:</label> <br>
                            <input type="text" placeholder="Enter geographic presence" name="geographic presence" required /> <br>
+                           <label for ="inventory"> Inventory of Product:</label> <br>
                            
                            <div class="button-group">  
                            <input type="cancel" value="Cancel" />                         
