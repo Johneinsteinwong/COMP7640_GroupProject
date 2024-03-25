@@ -108,8 +108,8 @@
                               </svg>
                            </a>
                         </li>
-                        <form class="d-flex" role="search">
-                           <input name="search_info" class="form-control me-2 nav-link" type="search" placeholder="Search" aria-label="Search">
+                        <form action="{{url_for('search_product')}}" class="d-flex" role="search" method="post">
+                           <input name="search_info" class="search_info form-control me-2 nav-link" id="search_info" type="search" placeholder="Search">
                            <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit" id="search_button">
                               <i class="fa fa-search" aria-hidden="true"></i>
                            </button>
@@ -259,19 +259,7 @@
       </footer>
       <!-- footer section -->
       <script>
-         document.getElementById("search_button").addEventListener("click", function(){
-             var search_info = document.getElementsByName("search_info")[0].value;
-             fetch('/search_product', {
-		        method: 'POST',
-		        headers: {
-		            'Content-Type': 'application/json',
-		        },
-		        body: JSON.stringify({search_info: search_info}),
-		    })
-		    .catch((error) => {
-		        console.error('Error:', error);
-		    });
-         });
+         
       </script>
       <!-- jQery -->
       <script src="js/jquery-3.4.1.min.js"></script>

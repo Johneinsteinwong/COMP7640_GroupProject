@@ -95,9 +95,9 @@ def addProduct():
 # name or its associated tags
 def searchProductByName():
     sql = '''
-    SELECT * FROM Product
-    WHERE pname LIKE "%s"
+    SELECT * FROM Product WHERE pname LIKE %s
     '''
+    # print(sql)
     return sql
 
 def searchProductByTag():

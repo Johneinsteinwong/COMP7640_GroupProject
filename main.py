@@ -50,17 +50,6 @@ def add_product():
     mysql.commit()
     return {'success': True}
 
-@app.route('/search_product', methods=['GET', 'POST'])
-def search_product():
-    pname = request.json['search_info']
-    print(pname)
-    cursor = mysql.cursor()
-    cursor.execute(query.searchProductByName(), (pname,))
-    data = cursor.fetchall()
-    # print(data)
-    return render_template('products.html', data=data)
-    # return {'data': data}
-
 
 # Page represent function
 # Kinney route
@@ -184,9 +173,27 @@ def login():
 
 @app.route('/products', methods=['GET', 'POST'])
 def products():
+    mysql.connect()
     cursor = mysql.cursor()
     cursor.execute(query.browseAllProducts())
+    mysql.commit()
     data = cursor.fetchall()
+    return render_template('products.html', data=data)
+
+@app.route('/search_product', methods=['GET', 'POST'])
+def search_product():
+    pname = request.form['search_info']
+    # pname = request.json['search_info']
+    print(pname)
+    search_info = '%' + pname + '%'
+    print(search_info)
+    mysql.connect()
+    cursor = mysql.cursor()
+    exe_str = cursor.mogrify('SELECT * FROM Product WHERE pname LIKE %s', (search_info,))
+    print(exe_str)
+    cursor.execute(exe_str)
+    data = cursor.fetchall()
+    print(data)
     return render_template('products.html', data=data)
 
 @app.route('/register', methods=['GET', 'POST'])
