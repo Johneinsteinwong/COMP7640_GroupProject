@@ -95,13 +95,23 @@ def customer_page():
      # Check if the user is logged in
     if 'loggedin' in session:
         cursor = mysql.cursor()
-        cursor.execute(query.customerProducts(), (session['customer_name'],))
+        cursor.execute(query.browseAllProductsByCustomer(), (session['customer_name'],))
         # query.customerProducts(session['username'])
         # cursor.execute("SELECT * FROM Product WHERE  = %s", (session['id'],))
         data = cursor.fetchall()
         # User is loggedin show them the home page
         return render_template('customer_page.html', customer_name=session['customer_name'], data=data)
     # User is not loggedin redirect to login page
+    return redirect(url_for('loginOrRegister'))
+
+@app.route('/vendor_page')
+def vendor_page():
+    if 'loggedin' in session:
+        cursor = mysql.cursor()
+        # cursor.execute(query.browseAllProductsByVendor(), (session['vendor_name'],))
+        # data = cursor.fetchall()
+        print(session['vendor_score'])
+        return render_template('vendor_page.html', vendor_id=session['vendor_id'] ,vendor_name=session['vendor_name'], vendor_score=session['vendor_score'], vendor_geographic=session['vendor_geographic'])
     return redirect(url_for('loginOrRegister'))
 
 # Kinney route
@@ -169,7 +179,7 @@ def login():
         if login_type == 'customer':
             cursor.execute('SELECT * FROM Customer WHERE username = %s AND password = %s', (username, password))
         elif login_type == 'vendor':
-            cursor.execute('SELECT * FROM Vender WHERE vname = %s AND password = %s', (username, password))
+            cursor.execute('SELECT * FROM Vendor WHERE vname = %s AND password = %s', (username, password))
         
         # Fetch one record and return result
         account = cursor.fetchone()
@@ -182,7 +192,12 @@ def login():
                 return redirect(url_for('customer_page'))
             # Create session data, we can access this data in other routes
             elif login_type == 'vendor':
+                session['vendor_id'] = account[0]#['vid']
                 session['vendor_name'] = account[1]#['vname']
+                session['vendor_score'] = account[2]#['score']
+                session['vendor_geographic'] = account[3]#['geographic']
+                # print('Here')
+                return redirect(url_for('vendor_page'))
 
             # session['id'] = account[0]#['id']
             # session['username'] = account[1]#['username']
