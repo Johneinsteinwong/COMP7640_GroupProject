@@ -50,6 +50,17 @@ def add_product():
     mysql.commit()
     return {'success': True}
 
+@app.route('/search_product', methods=['GET', 'POST'])
+def search_product():
+    pname = request.json['search_info']
+    print(pname)
+    cursor = mysql.cursor()
+    cursor.execute(query.searchProductByName(), (pname,))
+    data = cursor.fetchall()
+    # print(data)
+    return render_template('products.html', data=data)
+    # return {'data': data}
+
 
 # Page represent function
 # Kinney route
@@ -91,7 +102,6 @@ def admin_login():
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
-        
         
         # TODO: Need to update the salt here
         password = sha256(str.encode(password + str(1))).hexdigest()

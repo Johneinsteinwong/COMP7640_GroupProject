@@ -93,14 +93,19 @@ def addProduct():
 # Facilitate a search feature that allows users to discover products using tags, 
 # the search should return products where the tag matches any part of the product's
 # name or its associated tags
-def searchProduct(tag):
+def searchProductByName():
     sql = '''
     SELECT * FROM Product
-    WHERE pname LIKE '%%s%' OR tag1 = %s OR tag2 = %s OR tag3 = %s
+    WHERE pname LIKE "%s"
     '''
-    cursor.execute(sql,(tag,))
-    db.commit()
+    return sql
 
+def searchProductByTag():
+    sql = '''
+    SELECT * FROM Product
+    WHERE tag1 LIKE '%%s%' OR tag2 LIKE '%%s%' OR tag3 LIKE '%%s%'
+    '''
+    return sql
 
 # Customer Register
 def register(contactNumber, shippingDetail, username, password, salt):
