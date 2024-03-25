@@ -103,7 +103,7 @@ def searchProductByName():
 def searchProductByTag():
     sql = '''
     SELECT * FROM Product
-    WHERE tag1 LIKE '%%s%' OR tag2 LIKE '%%s%' OR tag3 LIKE '%%s%'
+    WHERE tag1 LIKE %s OR tag2 LIKE %s OR tag3 LIKE %s
     '''
     return sql
 

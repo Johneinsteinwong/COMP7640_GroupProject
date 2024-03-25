@@ -50,6 +50,29 @@ def add_product():
     mysql.commit()
     return {'success': True}
 
+@app.route('/search_product', methods=['GET', 'POST'])
+def search_product():
+    pname = request.form['search_info']
+    # pname = request.json['search_info']
+    # print(pname)
+    search_info = '%' + pname + '%'
+    # print(search_info)
+    # mysql.connect()
+    cursor = mysql.cursor()
+    exe_str = cursor.mogrify(query.searchProductByName(), (search_info,))
+    print(exe_str)
+    cursor.execute(exe_str)
+    data = cursor.fetchall()
+    datalist = list(data)
+
+    exe_tag_str = cursor.mogrify(query.searchProductByTag(), (search_info, search_info, search_info,))
+    data = cursor.execute(exe_tag_str)
+    tag_data = cursor.fetchall()
+    datalist += list(tag_data)
+
+    print(data)
+    return render_template('products.html', data=datalist)
+
 
 # Page represent function
 # Kinney route
@@ -178,22 +201,6 @@ def products():
     cursor.execute(query.browseAllProducts())
     mysql.commit()
     data = cursor.fetchall()
-    return render_template('products.html', data=data)
-
-@app.route('/search_product', methods=['GET', 'POST'])
-def search_product():
-    pname = request.form['search_info']
-    # pname = request.json['search_info']
-    print(pname)
-    search_info = '%' + pname + '%'
-    print(search_info)
-    mysql.connect()
-    cursor = mysql.cursor()
-    exe_str = cursor.mogrify('SELECT * FROM Product WHERE pname LIKE %s', (search_info,))
-    print(exe_str)
-    cursor.execute(exe_str)
-    data = cursor.fetchall()
-    print(data)
     return render_template('products.html', data=data)
 
 @app.route('/register', methods=['GET', 'POST'])
