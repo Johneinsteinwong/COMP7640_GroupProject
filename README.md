@@ -6,10 +6,10 @@
     - [x] Display a listing of all vendors
     - [ ] Onboard new vendors onto the marketplace
 - Product Catalog Management
-    - [ ] Browse all products offered by a specific vendor
-    - [ ] Introduce new products to a vendor's catalog
+    - [x] Browse all products offered by a specific vendor
+    - [x] Introduce new products to a vendor's catalog
 - Product Discovery
-    - [ ] Facilitate a search feature that allows users to discover products using tags,
+    - [x] Facilitate a search feature that allows users to discover products using tags,
     the search should return products where the tag matches any part of the product's name or its associated tags
 - Product Purchase
     - [ ] You should support product purchase. Record in database which customer purchases which product

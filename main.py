@@ -39,16 +39,55 @@ def check_username():
         return {'is_taken': True}
     return {'is_taken': False}
 
-@app.route('/add_product', methods=['POST'])
-def add_product():
-    pname = request.json['pname']
+@app.route('/product_update_data', methods=['POST'])
+def product_update_data():
+    pid = request.json['pid']
     price = request.json['price']
-    vid = request.json['vid']
+    # vid = request.json['vid']
+    p_tag1 = request.json['p_tag1']
+    p_tag2 = request.json['p_tag2']
+    p_tag3 = request.json['p_tag3']
     inventory = request.json['inventory']
     cursor = mysql.cursor()
-    cursor.execute(query.addProduct(), (pname, price, vid, inventory))
+    cursor.execute(query.updateProduct(), (price, inventory, p_tag1, p_tag2, p_tag3, pid))
     mysql.commit()
     return {'success': True}
+
+@app.route('/product_add_data', methods=['POST'])
+def product_add_data():
+    pname = request.json['pname']
+    price = request.json['price']
+    vid = session['vendor_id']
+    p_tag1 = request.json['p_tag1']
+    p_tag2 = request.json['p_tag2']
+    p_tag3 = request.json['p_tag3']
+    inventory = request.json['inventory']
+    cursor = mysql.cursor()
+    cursor.execute(query.addProduct(), (pname, price, vid, inventory, p_tag1, p_tag2, p_tag3, ''))
+    mysql.commit()
+    return {'success': True}
+
+@app.route('/get_new_pid', methods=['POST'])
+def get_new_pid():
+    cursor = mysql.cursor()
+    cursor.execute(query.getNewPid())
+    data = cursor.fetchone()
+    print(data)
+    return {'pid': str(int(data[0]) + 1)}
+
+# @app.route('/product_delete_data', methods=['POST'])
+
+
+# @app.route('/add_product', methods=['POST'])
+# def add_product():
+#     pname = request.json['pname']
+#     price = request.json['price']
+#     vid = request.json['vid']
+#     inventory = request.json['inventory']
+#     cursor = mysql.cursor()
+#     cursor.execute(query.addProduct(), (pname, price, vid, inventory))
+#     mysql.commit()
+#     return {'success': True}
 
 @app.route('/search_product', methods=['GET', 'POST'])
 def search_product():

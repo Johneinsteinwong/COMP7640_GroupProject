@@ -57,6 +57,12 @@ def getVid():
     WHERE vname = %s
     '''
     return sql
+
+def getNewPid():
+    sql = '''
+    SELECT MAX(pid) FROM Product
+    '''
+    return sql
 # Check class function end
 # =================================================================================================
 
@@ -83,6 +89,14 @@ def addProduct():
     sql = '''
     INSERT INTO Product(pname, price, vid, inventory, tag1, tag2, tag3, url) 
     VALUES (%s,%s,%s,%s, %s, %s, %s, %s)
+    '''
+    return sql
+
+def updateProduct():
+    sql = '''
+    UPDATE Product
+    SET price = %s, inventory = %s, tag1 = %s, tag2 = %s, tag3 = %s
+    WHERE pid = %s
     '''
     return sql
 # Update class function end
