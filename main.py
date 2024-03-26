@@ -59,19 +59,28 @@ def search_product():
     # print(search_info)
     # mysql.connect()
     cursor = mysql.cursor()
-    exe_str = cursor.mogrify(query.searchProductByName(), (search_info,))
-    print(exe_str)
+
+    exe_str = cursor.mogrify(query.searchProductByNameAndTag(), (search_info, search_info, search_info, search_info))
+    # print(exe_str)
     cursor.execute(exe_str)
     data = cursor.fetchall()
     datalist = list(data)
 
-    exe_tag_str = cursor.mogrify(query.searchProductByTag(), (search_info, search_info, search_info,))
-    data = cursor.execute(exe_tag_str)
-    tag_data = cursor.fetchall()
-    datalist += list(tag_data)
+    # exe_str = cursor.mogrify(query.searchProductByName(), (search_info,))
+    # print(exe_str)
+    # cursor.execute(exe_str)
+    # data = cursor.fetchall()
+    # datalist = list(data)
 
-    print(data)
-    return render_template('products.html', data=datalist)
+    # exe_tag_str = cursor.mogrify(query.searchProductByTag(), (search_info, search_info, search_info,))
+    # data = cursor.execute(exe_tag_str)
+    # tag_data = cursor.fetchall()
+    # datalist += list(tag_data)
+
+    hint_word = set_hint_word()
+    customer_name = set_customer_name()
+    # print(data)
+    return render_template('products.html', data=datalist, hint_word=hint_word, customer_name=customer_name)
 
 
 # Page represent function
@@ -107,12 +116,25 @@ def customer_page():
 @app.route('/vendor_page')
 def vendor_page():
     if 'loggedin' in session:
-        cursor = mysql.cursor()
+        # cursor = mysql.cursor()
         # cursor.execute(query.browseAllProductsByVendor(), (session['vendor_name'],))
         # data = cursor.fetchall()
-        print(session['vendor_score'])
-        return render_template('vendor_page.html', vendor_id=session['vendor_id'] ,vendor_name=session['vendor_name'], vendor_score=session['vendor_score'], vendor_geographic=session['vendor_geographic'])
+        # print(session['vendor_score'])
+        hint_word = set_hint_word()
+        return render_template('vendor_page.html', vendor_id=session['vendor_id'] ,vendor_name=session['vendor_name'], vendor_score=session['vendor_score'], vendor_geographic=session['vendor_geographic'], hint_word=hint_word)
     return redirect(url_for('loginOrRegister'))
+
+@app.route('/v_p_list')
+def v_p_list():
+    if 'loggedin' in session:
+        cursor = mysql.cursor()
+        cursor.execute(query.browseAllProductsByVendor(), (session['vendor_name'],))
+        data = cursor.fetchall()
+        hint_word = set_hint_word()
+        vendor_name = session['vendor_name']
+        return render_template('vendor_product_list.html', products=data, hint_word=hint_word, vendor_name=vendor_name)
+    return redirect(url_for('login'))
+    # return render_template('vendor_product_list.html')
 
 # Kinney route
 @app.route('/vAdmin', methods=['GET', 'POST'])
@@ -189,7 +211,7 @@ def login():
             session['loggedin'] = True
             if login_type == 'customer':
                 session['customer_name'] = account[3]#['customer_name']
-                return redirect(url_for('customer_page'))
+                return redirect(url_for('products'))
             # Create session data, we can access this data in other routes
             elif login_type == 'vendor':
                 session['vendor_id'] = account[0]#['vid']
@@ -209,6 +231,18 @@ def login():
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg, login_activate=login_activate, register_activate="")
 
+def set_hint_word():
+    if 'customer_name' not in session or session['customer_name'] == '':
+        return 'Please login first!'
+    else:
+        return 'Welcome back,'
+    
+def set_customer_name():
+    if 'customer_name' not in session or session['customer_name'] == '':
+        return ''
+    else:
+        return session['customer_name']
+
 @app.route('/products', methods=['GET', 'POST'])
 def products():
     mysql.connect()
@@ -216,7 +250,10 @@ def products():
     cursor.execute(query.browseAllProducts())
     mysql.commit()
     data = cursor.fetchall()
-    return render_template('products.html', data=data)
+    hint_word = set_hint_word()
+    customer_name = set_customer_name()
+
+    return render_template('products.html', data=data, hint_word=hint_word, customer_name=customer_name)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

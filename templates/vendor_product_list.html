@@ -1,0 +1,100 @@
+{% extends 'ven_nav_template.html' %}
+{% block content %}
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>{{vendor_name}}'s Products</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+      <!-- why section -->
+      <section class="why_section layout_padding">
+         <div class="container">
+         
+            <div class="row">
+               <div class="col-lg-8 offset-lg-2">
+                  <div class="full">
+                     <!--A table -->
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Product ID</th>
+                              <th>Product Name</th>
+                              <th>Product Price</th>
+                              <th>Product Tag1</th>
+                              <th>Product Tag2</th>
+                              <th>Product Tag3</th>                                  
+                              <th>Inventory</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           
+                           <!-- Django template for loop to iterate over vendors will go here -->                         
+                              {% for product in products %}
+                                 <tr>
+                                    <td>{{ product[0] }}</td>                              
+                                    <td>{{ product[1] }}</td>                                    
+                                    <td>{{ product[2] }}</td> 
+                                    <td>{{ product[5] }}</td> 
+                                    <td>{{ product[6] }}</td> 
+                                    <td>{{ product[7] }}</td> 
+                                    <td>{{ product[4] }}</td>
+                                    <td><button type="button" class="btn btn-primary btn-sm" id="{{}}">Edit</button></td>
+                                 
+                                 </tr>
+                              {% endfor %}
+                           
+                        </tbody>
+                     </table>
+
+                     <!-- Suggestion by Copilot for using Django
+                     from django.shortcuts import render
+                     from .models import Vendor
+
+                     def vendor_list(request):
+                        vendors = Vendor.objects.all()
+                        return render(request, 'vlist.html', {'vendors': vendors})-->
+                     <div class="container">   
+                     <a href="Add_vendor.html" class="btn btn-primary">Add Product</a>                     
+                     <a href="delete_vendor.html" class="btn btn-primary">Delete Product</a>                  
+                     </div>
+                         
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end why section -->
+      <!-- arrival section -->
+      <section class="arrival_section">
+         <div class="container">
+            <div class="box">
+               <div class="arrival_bg_box">
+                  <img src="images/arrival-bg.png" alt="">
+               </div>
+               <div class="row">
+                  <div class="col-md-6 ml-auto">
+                     <div class="heading_container remove_line_bt">
+                        <h2>
+                           #NewArrivals
+                        </h2>
+                     </div>
+                     <p style="margin-top: 20px;margin-bottom: 30px;">
+                        Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
+                     </p>
+                     <a href="">
+                     Shop Now
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end arrival section -->
+{% endblock %}

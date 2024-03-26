@@ -30,7 +30,7 @@ def browseAllProducts():
 def browseAllProductsByVendor():
     sql = '''
     WITH TMP AS 
-        (SELECT * FROM Product, Vendor
+        (SELECT Product.*, Vendor.vname FROM Product, Vendor
         WHERE Product.vid = Vendor.vid)
     SELECT * FROM TMP
     WHERE vname = %s
@@ -104,6 +104,13 @@ def searchProductByTag():
     sql = '''
     SELECT * FROM Product
     WHERE tag1 LIKE %s OR tag2 LIKE %s OR tag3 LIKE %s
+    '''
+    return sql
+
+def searchProductByNameAndTag():
+    sql = '''
+    SELECT * FROM Product
+    WHERE pname LIKE %s OR tag1 LIKE %s OR tag2 LIKE %s OR tag3 LIKE %s
     '''
     return sql
 
