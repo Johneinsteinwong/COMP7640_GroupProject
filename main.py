@@ -55,15 +55,32 @@ def product_update_data():
 
 @app.route('/product_add_data', methods=['POST'])
 def product_add_data():
+    cursor = mysql.cursor()
+    cursor.execute(query.browseVendorByVname(), (request.json['vname'],))
+    vendor = cursor.fetchone()
+    vid = vendor[0]
     pname = request.json['pname']
     price = request.json['price']
-    vid = session['vendor_id']
+    # vid = session['vendor_id']
     p_tag1 = request.json['p_tag1']
     p_tag2 = request.json['p_tag2']
     p_tag3 = request.json['p_tag3']
     inventory = request.json['inventory']
     cursor = mysql.cursor()
     cursor.execute(query.addProduct(), (pname, price, vid, inventory, p_tag1, p_tag2, p_tag3, ''))
+    mysql.commit()
+    return {'success': True}
+
+@app.route('/vendor_add_data', methods=['POST'])
+def vendor_add_data():
+    vname = request.json['vname']
+    # password = request.json['password']
+    geographic = request.json['vgeographic']
+    vpassword = vname + '2024'
+    password = sha256(str.encode(vpassword + str(1))).hexdigest()
+    score = request.json['vscore']
+    cursor = mysql.cursor()
+    cursor.execute(query.addVendor(), (vname, score, geographic, password, '1'))
     mysql.commit()
     return {'success': True}
 
@@ -74,6 +91,14 @@ def get_new_pid():
     data = cursor.fetchone()
     print(data)
     return {'pid': str(int(data[0]) + 1)}
+
+@app.route('/get_new_vid', methods=['POST'])
+def get_new_vid():
+    cursor = mysql.cursor()
+    cursor.execute(query.getNewVid())
+    data = cursor.fetchone()
+    print(data)
+    return {'vid': str(int(data[0]) + 1)}
 
 # @app.route('/product_delete_data', methods=['POST'])
 
@@ -138,7 +163,7 @@ def vAdminHome():
     # User is not loggedin redirect to login page
     return redirect(url_for('admin_login'))
 
-@app.route('/customer_page')
+@app.route('/customer_page/<customer_id>')
 def customer_page():
      # Check if the user is logged in
     if 'loggedin' in session:
@@ -152,28 +177,53 @@ def customer_page():
     # User is not loggedin redirect to login page
     return redirect(url_for('loginOrRegister'))
 
-@app.route('/vendor_page')
-def vendor_page():
+@app.route('/vendor_page/<vendor_id>')
+def vendor_page(vendor_id):
     if 'loggedin' in session:
         # cursor = mysql.cursor()
         # cursor.execute(query.browseAllProductsByVendor(), (session['vendor_name'],))
         # data = cursor.fetchall()
         # print(session['vendor_score'])
-        hint_word = set_hint_word()
-        return render_template('vendor_page.html', vendor_id=session['vendor_id'] ,vendor_name=session['vendor_name'], vendor_score=session['vendor_score'], vendor_geographic=session['vendor_geographic'], hint_word=hint_word)
+        hint_word = set_hint_word_vendor()
+        
+        cursor = mysql.cursor()
+        cursor.execute(query.browseVendorByVid(), (vendor_id,))
+        data = cursor.fetchone()
+
+        return render_template('vendor_page.html', vendor_id=vendor_id ,vendor_name=data[1], vendor_score=data[2], vendor_geographic=data[3], hint_word=hint_word)
     return redirect(url_for('loginOrRegister'))
 
-@app.route('/v_p_list')
-def v_p_list():
+@app.route('/admin_page')
+def admin_page():
+    if 'loggedin' in session:
+        # cursor = mysql.cursor()
+        # cursor.execute(query.browseAllProducts())
+        # data = cursor.fetchall()
+        return render_template('admin_page.html', admin_name=session['admin_name'], admin_id=session['admin_id'])
+    return redirect(url_for('loginOrRegister'))
+
+@app.route('/v_p_list/<vendor_id>')
+def v_p_list(vendor_id):
     if 'loggedin' in session:
         cursor = mysql.cursor()
-        cursor.execute(query.browseAllProductsByVendor(), (session['vendor_name'],))
+        cursor.execute(query.browseVendorByVid(), (vendor_id,))
+        vendor = cursor.fetchone()
+        vendor_name = vendor[1]
+        cursor.execute(query.browseAllProductsByVendor(), (vendor_name,))
         data = cursor.fetchall()
         hint_word = set_hint_word()
-        vendor_name = session['vendor_name']
         return render_template('vendor_product_list.html', products=data, hint_word=hint_word, vendor_name=vendor_name)
     return redirect(url_for('login'))
     # return render_template('vendor_product_list.html')
+
+@app.route('/vendor_list')
+def vendor_list():
+    if 'loggedin' in session:
+        cursor = mysql.cursor()
+        cursor.execute(query.browseAllVendors())
+        data = cursor.fetchall()
+        return render_template('vendor_list.html', vendors=data, admin_name=session['admin_name'])
+    return redirect(url_for('login'))
 
 # Kinney route
 @app.route('/vAdmin', methods=['GET', 'POST'])
@@ -211,7 +261,7 @@ def admin_login():
 
 @app.route('/')
 def loginOrRegister():
-    login_activate = ""
+    login_activate = "active"
     register_activate = ""
     return render_template('index.html', login_activate=login_activate, register_activate=register_activate)
 
@@ -241,6 +291,8 @@ def login():
             cursor.execute('SELECT * FROM Customer WHERE username = %s AND password = %s', (username, password))
         elif login_type == 'vendor':
             cursor.execute('SELECT * FROM Vendor WHERE vname = %s AND password = %s', (username, password))
+        elif login_type == 'admin':
+            cursor.execute('SELECT * FROM vAdmin WHERE username = %s AND password = %s', (username, password))
         
         # Fetch one record and return result
         account = cursor.fetchone()
@@ -258,8 +310,11 @@ def login():
                 session['vendor_score'] = account[2]#['score']
                 session['vendor_geographic'] = account[3]#['geographic']
                 # print('Here')
-                return redirect(url_for('vendor_page'))
-
+                return redirect(url_for('vendor_page', vendor_id=account[0]))
+            elif login_type == 'admin':
+                session['admin_id'] = account[0]#['id']
+                session['admin_name'] = account[1]#['username']
+                return redirect(url_for('admin_page'))
             # session['id'] = account[0]#['id']
             # session['username'] = account[1]#['username']
             # Redirect to home page
@@ -275,7 +330,13 @@ def set_hint_word():
         return 'Please login first!'
     else:
         return 'Welcome back,'
-    
+
+def set_hint_word_vendor():
+    if 'vendor_name' not in session or session['vendor_name'] == '':
+        return 'Please login first!'
+    else:
+        return 'Welcome back,'
+
 def set_customer_name():
     if 'customer_name' not in session or session['customer_name'] == '':
         return ''
