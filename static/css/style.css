@@ -1260,6 +1260,9 @@ body {
 .profile, .other-info {
   width: 45%; /* Adjust this value as needed */
 }
+.buttons {
+  text-align: right;
+}
 
 http://kute-themes.com/html/boutique/html/index.html
 https://template.hasthemes.com/noraure/noraure/index.html
