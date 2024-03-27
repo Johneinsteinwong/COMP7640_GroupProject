@@ -21,12 +21,12 @@
 
 # Set up MySQL database	
 - Go to MySQL workbench and create a database called 'ecommerce':
-
+```
 	CREATE DATABASE ecommerce;
-
+```
 
 - Go to global_profile.py and enter your MySQL credential:
-'''shell
+```
 	database_login_user = SqlAdmin(username, password, 'ecommerce')
-'''
+```
 Where username and password are your MySQL user and password respectively.
