@@ -212,6 +212,12 @@
               .then((data) => {
                 if (data.success) {
                   alert("Product added successfully");
+                  row.querySelectorAll(".product-data").forEach(function (td) {
+                    if (!td.classList.contains("pid")) {
+                      var txt = td.querySelector("input").value;
+                      td.textContent = txt;
+                    }
+                  });
                 } else {
                   alert("Failed to add product");
                 }
