@@ -149,6 +149,10 @@ try:
     cursor.execute(query.addProduct(), ('NVIDIA A100 Tensor Core GPU', 2999.99, nvidia_vid, 100, 'graphics card', 'nvidia', 'nvidia a100', 'https://m.media-amazon.com/images/I/51+9unnbV6L._AC_UY218_.jpg'))
     cursor.execute(query.addProduct(), ('Radeon Pro VII', 2799.99, amd_vid, 100, 'graphics card', 'amd', 'amd radeon', 'https://m.media-amazon.com/images/I/51kJLKR4slL._AC_UY218_.jpg'))
     db.commit()
+    admin_password = 'admin2024'
+    admin_hashed_password = sha256(str.encode(admin_password + str(1))).hexdigest()
+    cursor.execute(query.addAdmin(), ('admin', admin_hashed_password, 1))
+    db.commit()
 except ValueError as e:
     print(e)
 

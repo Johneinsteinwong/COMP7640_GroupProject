@@ -1,4 +1,4 @@
-{% extends 'ven_nav_template.html' %}
+{% extends 'ven_adm_nav_template.html' %}
 {% block content %}
 <!-- inner page section -->
 <section class="inner_page_head">
@@ -193,12 +193,13 @@
             row.querySelectorAll("input").forEach(function (input) {
               data.push(input.value);
             });
-            fetch("/product_add_data", {
+            fetch('/product_add_data', {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
+                vname: "{{ vendor_name }}",
                 pname: data[0],
                 price: data[1],
                 p_tag1: data[2],

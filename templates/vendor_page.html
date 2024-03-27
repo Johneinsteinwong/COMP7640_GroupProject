@@ -1,4 +1,4 @@
-{% extends "ven_nav_template.html" %} {% block content %}
+{% extends "ven_adm_nav_template.html" %} {% block content %}
 <!-- inner page section -->
 <section class="inner_page_head">
   <div class="container_fuild">
@@ -24,7 +24,7 @@
               <p>Vendor ID: {{ vendor_id }}</p>
               <p>Geographic Presence: {{ vendor_geographic }}</p>
               <p>Customer Feedback Score: {{ vendor_score }}</p>
-              <a href="{{url_for('v_p_list')}}">View Product</a>
+              <a href="{{url_for('v_p_list', vendor_id=vendor_id)}}">View Product</a>
             </div>
             <div class="container">
               <a href="vlist.html" class="btn btn-primary">Back</a>

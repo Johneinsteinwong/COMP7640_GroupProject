@@ -26,6 +26,26 @@ def browseAllProducts():
     '''
     return sql
 
+def browseAllVendors():
+    sql = '''
+    SELECT * FROM Vendor
+    '''
+    return sql
+
+def browseVendorByVid():
+    sql = '''
+    SELECT * FROM Vendor
+    WHERE vid = %s
+    '''
+    return sql
+
+def browseVendorByVname():
+    sql = '''
+    SELECT * FROM Vendor
+    WHERE vname = %s
+    '''
+    return sql
+
 # Browse all products offered by a specific vendor
 def browseAllProductsByVendor():
     sql = '''
@@ -63,6 +83,8 @@ def getNewPid():
     SELECT MAX(pid) FROM Product
     '''
     return sql
+
+
 # Check class function end
 # =================================================================================================
 
@@ -89,6 +111,13 @@ def addProduct():
     sql = '''
     INSERT INTO Product(pname, price, vid, inventory, tag1, tag2, tag3, url) 
     VALUES (%s,%s,%s,%s, %s, %s, %s, %s)
+    '''
+    return sql
+
+def addAdmin():
+    sql = '''
+    INSERT INTO vAdmin(username, password, salt)
+    VALUES (%s,%s,%s)
     '''
     return sql
 
