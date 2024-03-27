@@ -29,57 +29,41 @@
 
 			{% if login_activate == "active" or register_activate == "" %}
 				<form action="{{ url_for('login') }}" method="post" id="login_form">
+					
 					<select name="usertype", title="usertype", id="usertype" required>
 						<option value="customer" id="type_customer">Customer</option>
 						<option value="vendor" id="type_vendor">Vendor</option>
 					</select>
-					
-					<label for="username">
-						<i class="fas fa-user"></i>
-					</label> 
-					<input type="text" name="username" placeholder="Username" id="username" required>
-					<label for="password">
-						<i class="fas fa-lock"></i>
-					</label>
+																		
+					<input type="text" name="username" placeholder="Username" id="username" required>				
 					<input type="password" name="password" placeholder="Password" id="password" required>
 					<div class="msg">{{ msg }}</div>
-					<input type="submit" value="Login">
+					<input type="submit" value="Login" class ="round-button">
+				
 				</form>
 			{% else %}
 			<!-- TODO: Doing register function -->
 				<form action="{{ url_for('register') }}" method="post" id="register_form">
-					<label for="reg_usertype">
-						<i class="fas fa-user"></i>
-					</label>
+					
 					<select name="reg_usertype", title="reg_usertype", id="reg_usertype" required>
 						<option value="customer" id="reg_type_customer">Customer</option>
 						<option value="vendor" id="reg_type_vendor">Vendor</option>
 					</select>
 					
-					<label for="reg_username">
-						<i class="fas fa-user"></i>
-					</label>
+			
 					<input type="text" name="reg_username" placeholder="Your username" id="reg_username" required>
 
-					<label for="reg_password">
-						<i class="fas fa-lock"></i>
-					</label>
+					
 					<input type="password" name="reg_password" placeholder="Your Password" id="reg_password" required>
-
-					<label for="reg_re_password">
-						<i class="fas fa-lock"></i>
-					</label>
+					
+					
 					<input type="password" name="reg_re_password" placeholder="Confirm Password" id="reg_re_password" required>
 					
-					<label for="reg_phone">
-						<i class="fas fa-phone"></i>
-					</label>
+					<input type="text" name="reg_loc" placeholder="Your location" id="reg_loc" required>
+					
 					<input type="text" name="reg_phone" placeholder="Your phone" id="reg_phone" required>
 
-					<label for="reg_loc">
-						<i class="fas fa-loc"></i>
-					</label>
-					<input type="text" name="reg_loc" placeholder="Your location" id="reg_loc" required>
+					
 					<div class="msg">{{ msg }}</div>
 					<input type="submit" value="Register">
 				</form>

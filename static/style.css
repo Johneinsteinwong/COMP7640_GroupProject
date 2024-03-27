@@ -6,14 +6,19 @@
     -moz-osx-font-smoothing: grayscale;
 }
 body {
-    background-color: #435165;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../static/images/a.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
     margin: 0;
+    min-height: 100vh; /* Add this line */
+    /* background-image: url('../static/images/a.jpeg'); */
 }
 .login, .register {
     width: 400px;
     background-color: #ffffff;
-    box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 9px 0 rgba(180, 235, 26, 0.952);
     margin: 100px auto;
+    background-color:lightgreen
 }
 .login h1, .register h1 {
     text-align: center;
@@ -21,6 +26,7 @@ body {
     font-size: 24px;
     padding: 20px 0 20px 0;
     border-bottom: 1px solid #dee0e4;
+    
 }
 .login .links, .register .links {
     display: flex;
@@ -45,6 +51,9 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     padding-top: 20px;
+    background-image: url('../static/images/a.jpeg');
+    
+     
 }
 .login form label, .register form label {
     display: flex;
@@ -52,31 +61,43 @@ body {
     align-items: center;
     width: 50px;
     height: 50px;
-    background-color: #3274d6;
-    color: #ffffff;
+    
+    color: #fcf2f2;
 }
-.login form input[type="password"], .login form input[type="text"], .login form input[type="email"], .register form input[type="password"], .register form input[type="text"], .register form input[type="email"] {
-    width: 310px;
-    height: 50px;
-    border: 1px solid #dee0e4;
-    margin-bottom: 20px;
-    padding: 0 15px;
+/* .login form div, .register form div {
+    display: flex;
+    justify-content: space-between;
+    
+} */
+.login form input[type="password"], .login form input[type="text"], .login form input[type="email"], .register form input[type="password"], .register form input[type="text"], .register form input[type="email"]{
+   
+    width: 80%; /* Full width */
+    padding: 10px 20px; /* Padding */
+    margin: 8px 10px; /* Margin */
+    box-sizing: border-box; /* Make sure padding and width stays within the total width */
+    text-align: left;
+   
+    
+    
 }
 .login form input[type="submit"], .register form input[type="submit"] {
-    width: 100%;
-    padding: 15px;
+    width: 40%;
+    padding: 15px 20px;
+    border-radius: 30px; 
     margin-top: 20px;
-    background-color: #3274d6;
+    background-color: #4868e7;
+    color: white;
     border: 0;
     cursor: pointer;
     font-weight: bold;
-    color: #ffffff;
     transition: background-color 0.2s;
+
 }
 .login form input[type="submit"]:hover, .register form input[type="submit"]:hover {
     background-color: #2868c7;
     transition: background-color 0.2s;
 }
+
 .navtop {
     background-color: #2f3947;
     height: 60px;
@@ -148,4 +169,11 @@ body.loggedin {
 
 #alert {
     transition: opacity 0.5s;
+}
+
+#usertype,#reg_usertype {
+    width: 80%; 
+    padding: 40px; /* Padding */
+    box-sizing: border-box; /* Make sure padding and width stays within the total width */
+    margin: 10px 10px; /* Margin */
 }
