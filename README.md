@@ -36,6 +36,8 @@ Where username and password are your MySQL user and password respectively.
 	python initDB.py
 ```
 
+- [Optional] To change the password for Vendor Admin login, go to setVendorAdminCredential.py and change the values for the variables 'username' and 'password', the default values are 'testing' and '1234' respectively.
+ 
 - To set up a vendor admin login credential, run setVendorAdminCredential.py:
 ```
 	python setVendorAdminCredential.py
@@ -48,7 +50,13 @@ Where username and password are your MySQL user and password respectively.
 - Go to http://127.0.0.1:5000 for the login and register page.
 
 # Logging in Vendor Admin page
+- Click the 'Login' tab, choose 'Admin' from the dropdown menu.
+- Enter the username and password for Vendor Admin page, default values are 'testing' and '1234' respectively.
+- Click the 'Login' button.
 
+# Vender Management
+- Click "Go to vendor list" to view the list of all vendors.
+- To add a new vendor, click "Add Vendor", enter the fields for "Business Name", "Score", and "Address", click "Save".
 
 # Registering a Vendor account
 
