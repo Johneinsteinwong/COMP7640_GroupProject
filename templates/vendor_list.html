@@ -105,10 +105,14 @@
             } else if (i == 5) {
               cell.classList.add("v_p_page");
             }
+            if (i == 4 || i == 5) {
+              continue;
+            } else {
             var input = document.createElement("input");
             input.type = "text";
             input.style.width = "100%";
             cell.appendChild(input);
+            }
           }
 
           var saveButton = document.createElement("button");
@@ -140,6 +144,26 @@
               .then((data) => {
                 if (data.success) {
                   alert("Vendor added successfully");
+                  row.querySelectorAll(".vendor-data").forEach(function (td) {
+                    if (!td.classList.contains("vid") && !td.classList.contains("vpage") && !td.classList.contains("v_p_page")){
+                      var txt = td.querySelector("input").value;
+                      td.textContent = txt;
+                    }
+                    else if (td.classList.contains("vpage")){
+                      var a = document.createElement("a");
+                      a.href = "/vendor_page/" + vid;
+                      a.textContent = "View";
+                      td.textContent = "";
+                      td.appendChild(a);
+                    }
+                    else if (td.classList.contains("v_p_page")){
+                      var a = document.createElement("a");
+                      a.href = "/v_p_list/" + vid;
+                      a.textContent = "View";
+                      td.textContent = "";
+                      td.appendChild(a);
+                    }
+                  });
                   // button = document.getElementsByClassName("edit-button");
                   saveButton.remove();
                 } else {
