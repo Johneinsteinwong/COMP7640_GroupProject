@@ -130,38 +130,24 @@ def search_product():
     data = cursor.fetchall()
     datalist = list(data)
 
-    # exe_str = cursor.mogrify(query.searchProductByName(), (search_info,))
-    # print(exe_str)
-    # cursor.execute(exe_str)
-    # data = cursor.fetchall()
-    # datalist = list(data)
-
-    # exe_tag_str = cursor.mogrify(query.searchProductByTag(), (search_info, search_info, search_info,))
-    # data = cursor.execute(exe_tag_str)
-    # tag_data = cursor.fetchall()
-    # datalist += list(tag_data)
-
     hint_word = set_hint_word()
     customer_name = set_customer_name()
+    customer_id = session['customer_id']
     # print(data)
-    return render_template('products.html', data=datalist, hint_word=hint_word, customer_name=customer_name)
+    return render_template('products.html', data=datalist, hint_word=hint_word, customer_name=customer_name, customer_id=customer_id)
 
 
 # Page represent function
 # Kinney route
-@app.route('/vAdminHome')
-# John app route
-# @app.route('/pythonlogin/vAdminHome')
-def vAdminHome():
-     # Check if the user is logged in
+@app.route('/cart_page/<customer_id>', methods=['GET', 'POST'])
+def cart_page(customer_id):
     if 'loggedin' in session:
         cursor = mysql.cursor()
-        cursor.execute("SELECT * FROM Vender")
-        data = cursor.fetchall()
-        # User is loggedin show them the home page
-        return render_template('vAdminHome.html', username=session['username'], data=data)
-    # User is not loggedin redirect to login page
-    return redirect(url_for('admin_login'))
+        cursor.execute(query.browseCustomerByCid(), (customer_id,))
+        data = cursor.fetchone()
+        print(data)
+        return render_template('cart_page.html', customer_id=customer_id, customer_name=data[3])
+    return redirect(url_for('loginOrRegister'))
 
 @app.route('/customer_page/<customer_id>')
 def customer_page(customer_id):
@@ -300,6 +286,7 @@ def login():
         if account:
             session['loggedin'] = True
             if login_type == 'customer':
+                session['customer_id'] = account[0]
                 session['customer_name'] = account[3]#['customer_name']
                 return redirect(url_for('products'))
             # Create session data, we can access this data in other routes
@@ -351,8 +338,10 @@ def products():
     data = cursor.fetchall()
     hint_word = set_hint_word()
     customer_name = set_customer_name()
+    customer_id = session['customer_id']
+    print(customer_id)
 
-    return render_template('products.html', data=data, hint_word=hint_word, customer_name=customer_name)
+    return render_template('products.html', data=data, hint_word=hint_word, customer_name=customer_name, customer_id=customer_id)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

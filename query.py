@@ -46,6 +46,13 @@ def browseVendorByVname():
     '''
     return sql
 
+def browseCustomerByCid():
+    sql = '''
+    SELECT * FROM Customer
+    WHERE cid = %s
+    '''
+    return sql
+
 # Browse all products offered by a specific vendor
 def browseAllProductsByVendor():
     sql = '''
