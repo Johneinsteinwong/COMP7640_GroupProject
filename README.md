@@ -30,3 +30,15 @@
 	database_login_user = SqlAdmin(username, password, 'ecommerce')
 ```
 Where username and password are your MySQL user and password respectively.
+
+- To create the required tables, run initDB.py:
+```
+	python initDB.py
+```
+
+- To launch the website, run main.py:
+```
+	python main.py
+```
+
+- Go to http://127.0.0.1:5000 for the login and register page.
