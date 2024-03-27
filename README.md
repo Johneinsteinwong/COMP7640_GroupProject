@@ -21,9 +21,9 @@
 
 # Set up MySQL database	
 - Go to MySQL workbench and create a database called 'ecommerce':
-'''shell
+
 	CREATE DATABASE ecommerce;
-'''
+
 
 - Go to global_profile.py and enter your MySQL credential:
 '''shell
