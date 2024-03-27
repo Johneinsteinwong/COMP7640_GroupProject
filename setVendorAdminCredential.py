@@ -9,7 +9,7 @@ db = pymysql.connect(host='localhost',
                      password=database_login_user.password,
                      database=database_login_user.database)
  
-username = 'hi'
+username = 'testing'
 password = '1234'
 salt = 1 #generate a CPRN
 hashed_pw = sha256(str.encode(password + str(salt))).hexdigest()

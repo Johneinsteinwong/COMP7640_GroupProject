@@ -2,7 +2,7 @@
  
 # TODO
 
-- Vender Administration
+- Vendor Administration
     - [x] Display a listing of all vendors
     - [x] Onboard new vendors onto the marketplace
 - Product Catalog Management
@@ -19,7 +19,7 @@
 # Getting Started
 
 
-# Set up MySQL database	
+# Setting up MySQL database	
 - Go to MySQL workbench and create a database called 'ecommerce':
 ```
 	CREATE DATABASE ecommerce;
@@ -36,9 +36,20 @@ Where username and password are your MySQL user and password respectively.
 	python initDB.py
 ```
 
+- To set up a vendor admin login credential, run setVendorAdminCredential.py:
+```
+	python setVendorAdminCredential.py
+```
 - To launch the website, run main.py:
 ```
 	python main.py
 ```
 
 - Go to http://127.0.0.1:5000 for the login and register page.
+
+# Logging in Vendor Admin page
+
+
+# Registering a Vendor account
+
+# Registering a Customer account
