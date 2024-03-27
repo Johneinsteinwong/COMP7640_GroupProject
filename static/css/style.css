@@ -402,13 +402,13 @@ a:focus {
 }
 
 .product_section .box .detail-box h5 {
-  font-size: 18px;
+  font-size: 15px;
   margin-top: 10px;
 }
 
 .product_section .box .detail-box h6 {
   margin-top: 10px;
-  color: #002c3e;
+  color: #0c6486;
   font-weight: 600;
 }
 
@@ -1192,7 +1192,12 @@ th {
   background-color: #007BFF;
   color: white;
 }
+th {
+  background-color: #ed8b8497;
+  color: white;
 
+
+}
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
@@ -1201,37 +1206,59 @@ tr:nth-child(even) {
   display: inline-block;
   margin: 10px;
   padding: 10px 20px;
-  background-color: #007BFF;
+  background-color: #ed8b8497;
   color: #fff;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 30px;
+  box-shadow: 0 5px #d3d6d9;
   transition: background-color 0.3s ease;
+
+  
+  
+}
+
+
+
+.btn:active {
+  box-shadow: 0 5px #edeff0;
+  transform: translateY(5px);
 }
 
 .btn:hover {
-  background-color: #0056b3;
+  background-color: #ed8b8456;
 }
 
 body {
   font-family: Arial, sans-serif;
 }
 
+
 .vendor-profile {
-  background-color: #f9f9f9;
-  border-radius: 5px;
+  width: 100%;
+  margin: 0 auto;
   padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #ed8b8497;
+  border-radius: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #ed8b8497, #ffffff);
+  display: flex;
+  justify-content: space-between;
+  
 }
 
 .vendor-profile h1 {
-  color: #333;
-  margin-bottom: 10px;
+  color: #f8f4f4;
+  margin-bottom: 30px;
+
 }
 
 .vendor-profile p {
-  color: #666;
+  color: #554e4e;
   line-height: 1.6;
+
+}
+.profile, .other-info {
+  width: 45%; /* Adjust this value as needed */
 }
 
 http://kute-themes.com/html/boutique/html/index.html

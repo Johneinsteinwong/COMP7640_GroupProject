@@ -11,7 +11,7 @@ body {
     background-size: cover;
     margin: 0;
     min-height: 100vh; /* Add this line */
-    /* background-image: url('../static/images/a.jpeg'); */
+   
 }
 .login, .register {
     width: 400px;
@@ -22,10 +22,10 @@ body {
 }
 .login h1, .register h1 {
     text-align: center;
-    color: #5b6574;
+    color: #165fcc;
     font-size: 24px;
     padding: 20px 0 20px 0;
-    border-bottom: 1px solid #dee0e4;
+    border-bottom: 1px solid #165fcc;
     
 }
 .login .links, .register .links {
@@ -177,3 +177,4 @@ body.loggedin {
     box-sizing: border-box; /* Make sure padding and width stays within the total width */
     margin: 10px 10px; /* Margin */
 }
+

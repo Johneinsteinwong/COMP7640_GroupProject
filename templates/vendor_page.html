@@ -20,17 +20,21 @@
         <div class="full">
           <body>
             <div class="vendor-profile">
-              <h1>{{ vendor_name }}</h1>
+              <div class ="profile">
+              <h1>{{ vendor_name }}'s Profile </h1>
+              </div>
+              <div class="other-info">
+                       
               <p>Vendor ID: {{ vendor_id }}</p>
               <p>Geographic Presence: {{ vendor_geographic }}</p>
               <p>Customer Feedback Score: {{ vendor_score }}</p>
               <a href="{{url_for('v_p_list')}}">View Product</a>
+              </div>
             </div>
             <div class="container">
               <a href="vlist.html" class="btn btn-primary">Back</a>
               <a href="vprofile_edit_by_vendor.html" class="btn btn-primary"
-                >Edit Profile</a
-              >
+                >Edit Profile</a>
             </div>
           </body>
         </div>
