@@ -71,6 +71,19 @@ def product_add_data():
     mysql.commit()
     return {'success': True}
 
+@app.route('/vendor_add_data', methods=['POST'])
+def vendor_add_data():
+    vname = request.json['vname']
+    # password = request.json['password']
+    geographic = request.json['vgeographic']
+    vpassword = vname + '2024'
+    password = sha256(str.encode(vpassword + str(1))).hexdigest()
+    score = request.json['vscore']
+    cursor = mysql.cursor()
+    cursor.execute(query.addVendor(), (vname, score, geographic, password, '1'))
+    mysql.commit()
+    return {'success': True}
+
 @app.route('/get_new_pid', methods=['POST'])
 def get_new_pid():
     cursor = mysql.cursor()
@@ -78,6 +91,14 @@ def get_new_pid():
     data = cursor.fetchone()
     print(data)
     return {'pid': str(int(data[0]) + 1)}
+
+@app.route('/get_new_vid', methods=['POST'])
+def get_new_vid():
+    cursor = mysql.cursor()
+    cursor.execute(query.getNewVid())
+    data = cursor.fetchone()
+    print(data)
+    return {'vid': str(int(data[0]) + 1)}
 
 # @app.route('/product_delete_data', methods=['POST'])
 

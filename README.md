@@ -4,7 +4,7 @@
 
 - Vender Administration
     - [x] Display a listing of all vendors
-    - [ ] Onboard new vendors onto the marketplace
+    - [x] Onboard new vendors onto the marketplace
 - Product Catalog Management
     - [x] Browse all products offered by a specific vendor
     - [x] Introduce new products to a vendor's catalog

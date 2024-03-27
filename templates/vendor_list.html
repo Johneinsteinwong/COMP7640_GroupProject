@@ -26,6 +26,8 @@
               <tr>
                 <th>Vendor ID</th>
                 <th>Business Name</th>
+                <th>Score</th>
+                <th>Address</th>
                 <th>Vendor Profile</th>
                 <th>Vendor Product</th>
               </tr>
@@ -35,6 +37,8 @@
               <tr class="vendor-row">
                 <td class="vendor-data vid">{{ vendor[0] }}</td>
                 <td class="vendor-data vname">{{ vendor[1] }}</td>
+                <td class="vendor-data vscore">{{ vendor[2] }}</td>
+                <td class="vendor-data vgeographic">{{ vendor[3] }}</td>
                 <td class="vendor-data vpage">
                   <a href={{url_for('vendor_page', vendor_id=vendor[0])}}>View
                 </td>
@@ -87,14 +91,18 @@
           cell.textContent = vid;
           cell.classList.add("vendor-data", "vid");
 
-          for (var i = 1; i < 4; i++) {
+          for (var i = 1; i < 6; i++) {
             var cell = row.insertCell(i);
             cell.classList.add("vendor-data");
             if (i == 1) {
               cell.classList.add("vname");
             } else if (i == 2) {
-              cell.classList.add("vpage");
+              cell.classList.add("vscore");
             } else if (i == 3) {
+              cell.classList.add("vgeographic");
+            } else if (i == 4) {
+              cell.classList.add("vpage");
+            } else if (i == 5) {
               cell.classList.add("v_p_page");
             }
             var input = document.createElement("input");
@@ -111,33 +119,31 @@
             "btn-sm",
             "edit-button"
           );
-          row.insertCell(4).appendChild(saveButton);
+          row.insertCell(6).appendChild(saveButton);
           saveButton.addEventListener("click", function saveHandler() {
             var data = [];
             row.querySelectorAll("input").forEach(function (input) {
               data.push(input.value);
             });
-            fetch("/product_add_data", {
+            fetch("/vendor_add_data", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                vname: "{{ vendor_name }}",
-                pname: data[0],
-                price: data[1],
-                p_tag1: data[2],
-                p_tag2: data[3],
-                p_tag3: data[4],
-                inventory: data[5],
+                vname: data[0],
+                vscore: data[1],
+                vgeographic: data[2],
               }),
             })
               .then((response) => response.json())
               .then((data) => {
                 if (data.success) {
-                  alert("Product added successfully");
+                  alert("Vendor added successfully");
+                  // button = document.getElementsByClassName("edit-button");
+                  saveButton.remove();
                 } else {
-                  alert("Failed to add product");
+                  alert("Failed to add vendor");
                 }
               })
               .catch((error) => {

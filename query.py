@@ -83,6 +83,11 @@ def getNewPid():
     SELECT MAX(pid) FROM Product
     '''
     return sql
+def getNewVid():
+    sql = '''
+    SELECT MAX(vid) FROM Vendor
+    '''
+    return sql
 
 
 # Check class function end
