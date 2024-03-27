@@ -15,3 +15,18 @@
     - [ ] You should support product purchase. Record in database which customer purchases which product
 - Order Modification
     - [ ] Users must have the option to modify their orders, including the removal of specific products or the cancellation of the entire order before it enters the shipping process
+	
+# Getting Started
+
+
+# Set up MySQL database	
+- Go to MySQL workbench and create a database called 'ecommerce':
+'''
+	CREATE DATABASE ecommerce;
+'''
+
+- Go to global_profile.py and enter your MySQL credential:
+'''
+	database_login_user = SqlAdmin(username, password, 'ecommerce')
+'''
+Where username and password are your MySQL user and password respectively.
