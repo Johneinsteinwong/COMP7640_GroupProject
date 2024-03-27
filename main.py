@@ -164,16 +164,15 @@ def vAdminHome():
     return redirect(url_for('admin_login'))
 
 @app.route('/customer_page/<customer_id>')
-def customer_page():
+def customer_page(customer_id):
      # Check if the user is logged in
     if 'loggedin' in session:
         cursor = mysql.cursor()
-        cursor.execute(query.browseAllProductsByCustomer(), (session['customer_name'],))
-        # query.customerProducts(session['username'])
-        # cursor.execute("SELECT * FROM Product WHERE  = %s", (session['id'],))
-        data = cursor.fetchall()
+        cursor.execute(query.browseCustomerByCid(), (customer_id,))
+        # cursor.execute(query.browseAllProductsByCustomer(), (session['customer_name'],))
+        data = cursor.fetchone()
         # User is loggedin show them the home page
-        return render_template('customer_page.html', customer_name=session['customer_name'], data=data)
+        return render_template('customer_page.html',customer_id=customer_id, customer_name=data[3], customer_address=data[2], customer_phone=data[1])
     # User is not loggedin redirect to login page
     return redirect(url_for('loginOrRegister'))
 

@@ -56,7 +56,7 @@
                         </li>
                         {% if customer_name != '' %}
                         <li class="nav-item">
-                           <a class="nav-link" href="customer_page.html">{{ customer_name }}</a>
+                           <a class="nav-link" href={{url_for('/customer_page', customer_id = customeer_id)}}>{{ customer_name }}</a>
                         </li>
                         {% endif %}
                         <li class="nav-item">
