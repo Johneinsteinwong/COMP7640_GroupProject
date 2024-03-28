@@ -317,6 +317,7 @@ def cancelOrder(oid):
     SET orderStatus = 'cancelled'
     WHERE oid = %s
     '''
+    # only execute cancel order if the orderStatus is not 'shipping' nor 'fulfilled' nor 'cancelled'
     if status == 'order received':
         cursor.execute(sql,(oid,))
         db.commit()
@@ -336,6 +337,7 @@ def removeProduct(oid,pid):
     DELETE FROM Ordered
     WHERE oid = %s AND pid = %s
     '''
+    # only execute remove product if the orderStatus is not 'shipping' nor 'fulfilled' nor 'cancelled'
     if status == 'order received':
         cursor.execute(sql, (oid,pid))
         db.commit()
