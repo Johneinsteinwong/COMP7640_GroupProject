@@ -14,45 +14,49 @@ cursor = db.cursor()
 # TODO: Change the following functions from in-function execute to return the sql string
 
 # Check class function
+
+ # check if user already exists
 def checkUsername():
     sql = '''
     SELECT * FROM Customer
     WHERE username = %s '''
     return sql
 
+# browse all products
 def browseAllProducts():
     sql = '''
     SELECT * FROM Product
     '''
     return sql
 
+# browse all vendors
 def browseAllVendors():
     sql = '''
     SELECT * FROM Vendor
     '''
     return sql
-
+# browse vendors by vendor ID
 def browseVendorByVid():
     sql = '''
     SELECT * FROM Vendor
     WHERE vid = %s
     '''
     return sql
-
+# browse vendors by vendor name
 def browseVendorByVname():
     sql = '''
     SELECT * FROM Vendor
     WHERE vname = %s
     '''
     return sql
-
+# browse customer by customer ID
 def browseCustomerByCid():
     sql = '''
     SELECT * FROM Customer
     WHERE cid = %s
     '''
     return sql
-
+# browse product by product name
 def browseProductByPname():
     sql = '''
     SELECT * FROM Product
@@ -67,6 +71,7 @@ def browseProductByPid():
     '''
     return sql
 
+# browse product in cart by customer ID
 def browseCartProductsByCid():
     sql = '''
     WITH TMP AS
@@ -77,7 +82,7 @@ def browseCartProductsByCid():
     '''
     return sql
 
-# Browse all products offered by a specific vendor
+# browse all products offered by a specific vendor
 def browseAllProductsByVendor():
     sql = '''
     WITH TMP AS 
@@ -89,6 +94,7 @@ def browseAllProductsByVendor():
     # cursor.execute(sql,(vname,))
     return sql
 
+# browse all products by customer
 def browseAllProductsByCustomer():
     sql = '''
     WITH TMP AS
@@ -102,6 +108,7 @@ def browseAllProductsByCustomer():
     # cursor.execute(sql,(cname,))
     return sql
 
+# browse all order by customer ID
 def browseAllOrdersByCid():
     sql = '''
     SELECT oid FROM Ordered
@@ -110,6 +117,7 @@ def browseAllOrdersByCid():
     '''
     return sql
 
+# browse all order by order ID and customer ID
 def browseAllOrdersProductsByOidCid():
     sql = '''
     WITH TMP AS
@@ -120,23 +128,26 @@ def browseAllOrdersProductsByOidCid():
     '''
     return sql
 
+# get vendor ID by vendor name
 def getVid():
     sql = '''
     SELECT vid FROM Vendor
     WHERE vname = %s
     '''
     return sql
-
+# Get latest pid to increment it
 def getNewPid():
     sql = '''
     SELECT MAX(pid) FROM Product
     '''
     return sql
+# Get latest vid to increment it
 def getNewVid():
     sql = '''
     SELECT MAX(vid) FROM Vendor
     '''
     return sql
+# Get latest oid to increment it
 def getMaxOid():
     sql = '''
     SELECT MAX(oid) FROM Ordered
@@ -156,7 +167,7 @@ def addVendor():
     VALUES (%s,%s,%s,%s,%s)
     '''
     return sql
-
+# Add new customer
 def addCustomer():
     # password = sha256(str.encode(password + str(salt))).hexdigest()
     sql = '''
@@ -172,28 +183,28 @@ def addProduct():
     VALUES (%s,%s,%s,%s, %s, %s, %s, %s)
     '''
     return sql
-
+# Add product to cart
 def addCart():
     sql = '''
     INSERT INTO Cart(cid, pid, quantity)
     VALUES (%s,%s,%s)
     '''
     return sql
-
+# Add admin account credential
 def addAdmin():
     sql = '''
     INSERT INTO vAdmin(username, password, salt)
     VALUES (%s,%s,%s)
     '''
     return sql
-
+# Add order by a customer
 def addOrder():
     sql = '''
     INSERT INTO Ordered(oid, cid, pid, quantity, orderStatus, orderTime)
     VALUES (%s,%s,%s,%s,'order received',%s)
     '''
     return sql
-
+# Update product information
 def updateProduct():
     sql = '''
     UPDATE Product
@@ -201,20 +212,12 @@ def updateProduct():
     WHERE pid = %s
     '''
     return sql
-
+# Update product in cart, i.e. update quantity
 def updateCart():
     sql = '''
     UPDATE Cart
     SET quantity = %s
     WHERE cid = %s AND pid = %s
-    '''
-    return sql
-
-def updateInventory():
-    sql = '''
-    UPDATE Product
-    SET inventory = %s
-    WHERE pid = %s
     '''
     return sql
 
@@ -224,7 +227,7 @@ def deleteCart():
     WHERE cid = %s AND pid = %s
     '''
     return sql
-
+# Delete a customer's cart by customer id
 def deleteCartByCid():
     sql = '''
     DELETE FROM Cart
