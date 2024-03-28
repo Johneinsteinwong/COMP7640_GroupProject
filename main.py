@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 #from flask_mysqldb import MySQL
 #import MySQLdb.cursors
 #import MySQLdb.cursors, re, hashlib
@@ -8,6 +8,8 @@ from global_profile import database_login_user
 from json import dump
 from query import db
 import query
+from datetime import datetime
+
 
 # In different environment, the usename of database and password may be
 # different, you can specify your name, password and database in the
@@ -137,30 +139,20 @@ def update_cart(customer_id):
     mysql.commit()
     return {'success': True}
 
-@app.route('/buy_products/<customer_id>', methods=['POST'])
-def buy_products(customer_id):
-    cursor = mysql.cursor()
-    cursor.execute(query.browseCartProductsByCid(), (customer_id,))
-    products = cursor.fetchall()
-    for product in products:
-        cursor.execute(query.addOrder(), (customer_id, product[0], product[2]))
-        cursor.execute(query.deleteCart(), (customer_id, product[0]))
-    mysql.commit()
-    return {'success': True}
-
-# @app.route('/product_delete_data', methods=['POST'])
-
-
-# @app.route('/add_product', methods=['POST'])
-# def add_product():
-#     pname = request.json['pname']
-#     price = request.json['price']
-#     vid = request.json['vid']
-#     inventory = request.json['inventory']
-#     cursor = mysql.cursor()
-#     cursor.execute(query.addProduct(), (pname, price, vid, inventory))
-#     mysql.commit()
-#     return {'success': True}
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    session.pop('customer_id', None)
+    session.pop('customer_name', None)
+    session.pop('vendor_id', None)
+    session.pop('vendor_name', None)
+    session.pop('vendor_score', None)
+    session.pop('vendor_geographic', None)
+    session.pop('admin_id', None)
+    session.pop('admin_name', None)
+    return redirect(url_for('loginOrRegister'))
 
 @app.route('/search_product', methods=['GET', 'POST'])
 def search_product():
@@ -202,7 +194,7 @@ def cart_page(customer_id):
         print(data)
         cursor.execute(query.browseCartProductsByCid(), (customer_id,))
         products = cursor.fetchall()
-        return render_template('cart_page.html', customer_id=customer_id, customer_name=data[3], products = products)
+        return render_template('cart_page.html', customer_id=customer_id, customer_name=data[3], products = products, no_product=False)
     return redirect(url_for('loginOrRegister'))
 
 @app.route('/customer_page/<customer_id>')
@@ -230,7 +222,7 @@ def order_page(customer_id):
         order_ids = cursor.fetchall()
         # print(order_ids)
         list_order_ids = list(order_ids)
-        print(list_order_ids)
+        # print(list_order_ids)
         orders_list = []
         for oid in list_order_ids:
             print(oid[0])
@@ -240,14 +232,45 @@ def order_page(customer_id):
             cursor.execute(query.browseAllOrdersProductsByOidCid(), (oid[0], customer_id,))
             products = cursor.fetchall()
             order_dict['products'] = list(products)
+            sum = 0
+            for product in products:
+                sum += product[1] * product[5]
+            order_dict['total_price'] = sum
             orders_list.append(order_dict)
-            print(order_dict)
+            # print(order_dict)
         print(orders_list)
             
-
-        return render_template('order_page.html', customer_id=customer_id, customer_name=data[3], products = products, orders=orders_list)
+        return render_template('order_page.html', customer_id=customer_id, customer_name=data[3], orders=orders_list)
     return redirect(url_for('loginOrRegister'))
 
+@app.route('/buy_products/<customer_id>', methods=['GET', 'POST'])
+def buy_products(customer_id):
+    cursor = mysql.cursor()
+    cursor.execute(query.browseCartProductsByCid(), (customer_id,))
+    products = cursor.fetchall()
+    no_product = False
+    if len(products) == 0:
+        no_product = True
+        flash('No product in the cart!')
+        return redirect(url_for('cart_page', customer_id=customer_id, no_product=no_product))
+    else:
+        # Get the latest order id
+        cursor.execute(query.getMaxOid())
+        max_oid = cursor.fetchone()
+        print(max_oid)
+        latest_oid = 0
+        if max_oid[0] == None:
+            print('None')
+            latest_oid = 1
+        else:
+            latest_oid = int(max_oid[0]) + 1
+
+        time_stamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        for product in products:
+            cursor.execute(query.addOrder(), (latest_oid, customer_id, product[1], product[2], time_stamp))
+            cursor.execute(query.deleteCart(), (customer_id, product[1]))
+        mysql.commit()
+        return redirect(url_for('order_page', customer_id=customer_id))
 
 @app.route('/vendor_page/<vendor_id>')
 def vendor_page(vendor_id):

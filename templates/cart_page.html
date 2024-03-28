@@ -65,7 +65,13 @@
 
 <script>
 
+var message = {{get_flashed_messages()|tojson}};
+console.log(message);
+
 window.onload = function() {
+  message.forEach(function(msg) {
+    alert(msg);
+  });
   document.querySelectorAll('.total-price').forEach(function(price) {
     price.textContent = (parseFloat(price.textContent) * 1).toFixed(2);
   });
@@ -107,24 +113,32 @@ document.querySelectorAll('.form-control').forEach(function(input) {
           })
           .then(response => response.json())
           .then(data => {
-            alert(data['success']);
-            this.remove();
 
-            // Update total price for this product
-            var row = document.getElementById('item-' + itemId);
-            var price = parseFloat(row.querySelector('.product-price').textContent);
-            var total_price_per_product = price * quantity;
-            row.querySelector('.total-price').textContent = total_price_per_product.toFixed(2);
+            if(data['success'])
+            {
+              alert('Item quantity updated');
+              this.remove();
 
-            // Update sum of all total prices
-            var total_price = 0;
-            var rows = document.querySelectorAll('tbody tr');
-            rows.forEach(function(row) {
-              total_price += parseFloat(row.querySelector('.total-price').textContent);
-            });
-
-            var total_price_element = document.querySelector('.text-right h5');
-            total_price_element.textContent = 'Total: ' + total_price.toFixed(2);
+              // Update total price for this product
+              var row = document.getElementById('item-' + itemId);
+              var price = parseFloat(row.querySelector('.product-price').textContent);
+              var total_price_per_product = price * quantity;
+              row.querySelector('.total-price').textContent = total_price_per_product.toFixed(2);
+              
+              // Update sum of all total prices
+              var total_price = 0;
+              var rows = document.querySelectorAll('tbody tr');
+              rows.forEach(function(row) {
+                total_price += parseFloat(row.querySelector('.total-price').textContent);
+              });
+            
+              var total_price_element = document.querySelector('.text-right h5');
+              total_price_element.textContent = 'Total: ' + total_price.toFixed(2);
+              }
+              else
+              {
+                alert('Error: Could not update item quantity');
+              }
           })
           .catch((error) => {
             console.error('Error:', error)
@@ -201,17 +215,25 @@ document.querySelector('.btn-remove-all').addEventListener('click', function(eve
   })
   .then(response => response.json())
   .then(data => {
-    alert(data['success']);
+    
+    if(data['success'])
+    {
+      alert('All items removed from cart');
+      // Remove all products from the table
+      var rows = document.querySelectorAll('tbody tr');
+      rows.forEach(function(row) {
+        row.remove();
+      });
 
-    // Remove all products from the table
-    var rows = document.querySelectorAll('tbody tr');
-    rows.forEach(function(row) {
-      row.remove();
-    });
-
-    // Update sum of all total prices
-    var total_price_element = document.querySelector('.text-right h5');
-    total_price_element.textContent = 'Total Price: ';
+      // Update sum of all total prices
+      var total_price_element = document.querySelector('.text-right h5');
+      total_price_element.textContent = 'Total Price: ';
+    }
+    else
+    {
+      alert('Error: Could not remove all items from cart');
+    }
+    
   })
   .catch((error) => {
     console.error('Error:', error)

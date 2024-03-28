@@ -131,6 +131,11 @@ def getNewVid():
     SELECT MAX(vid) FROM Vendor
     '''
     return sql
+def getMaxOid():
+    sql = '''
+    SELECT MAX(oid) FROM Ordered
+    '''
+    return sql
 
 
 # Check class function end
@@ -173,6 +178,13 @@ def addAdmin():
     sql = '''
     INSERT INTO vAdmin(username, password, salt)
     VALUES (%s,%s,%s)
+    '''
+    return sql
+
+def addOrder():
+    sql = '''
+    INSERT INTO Ordered(oid, cid, pid, quantity, orderStatus, orderTime)
+    VALUES (%s,%s,%s,%s,'order received',%s)
     '''
     return sql
 

@@ -13,7 +13,7 @@ db = pymysql.connect(host='localhost',
 cursor = db.cursor()
  
 
-cursor.execute("DROP TABLE IF EXISTS Customer, Vendor, Product, Ordered, vAdmin;")
+cursor.execute("DROP TABLE IF EXISTS Customer, Vendor, Product, Ordered, vAdmin, Cart;")
 
 sql_customer = '''
     CREATE TABLE Customer(
