@@ -18,7 +18,10 @@
 	
 # Requirements
 - Python 3.11
-- [Optional] Virtual environment such as conda
+- [Optional] Virtual environment such as conda:
+```
+	conda create -n comp7640 python=3.11
+```
 # Installing dependencies
 - Run pip install to install dependencies:
 ```
