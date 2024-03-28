@@ -221,8 +221,6 @@ def updateCart():
     '''
     return sql
 
-<<<<<<< Updated upstream
-=======
 def updateInventory():
     sql = '''
     UPDATE Product
@@ -239,7 +237,6 @@ def updateOrderProductStatus():
     '''
     return sql
 
->>>>>>> Stashed changes
 def deleteCart():
     sql = '''
     DELETE FROM Cart

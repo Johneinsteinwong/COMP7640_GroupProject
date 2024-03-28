@@ -128,7 +128,22 @@ with names containing "book", including "Galaxy Book", "MacBook Pro", "MateBook"
 - You can also discover products using their exact names, for example, entering "MacBook Pro" will only return the product "MacBook Pro".
 
 # Product Purchase
+- To purchase a product, move the mouse to the image of the product, click "Add to Cart".
+- There will be a message "Item added to cart", you can select multiple products to cart.
+- To check out, click the "cart" icon on the top of the website.
 
+![](/img/cart.JPG)
+
+- You can see your selected products in the cart, you can change the quantity and click "confirm" if you like.
+
+![](/img/cart2.JPG)
+
+- Click the "Buy" button to buy the products.
+- You can check your order history by clicking your username and "Order History".
+
+![](/img/history.JPG)
+
+![](/img/history2.JPG)
 
 # Order Modification
 
