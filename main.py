@@ -148,6 +148,20 @@ def update_cart(customer_id):
     mysql.commit()
     return {'success': True}
 
+@app.route('/update_order_status', methods=['POST'])
+def update_order_status():
+    cursor = mysql.cursor()
+    oid = request.json['oid']
+    status = request.json['status']
+    product_name = request.json['product_name']
+    print(oid, status, product_name)
+    cursor.execute(query.browseProductByPname(), (product_name,))
+    product = cursor.fetchone()
+    pid = product[0]
+    cursor.execute(query.updateOrderProductStatus(), (status, oid, pid))
+    mysql.commit()
+    return {'success': True}
+
 @app.route('/logout')
 def logout():
     # Logout account
@@ -253,6 +267,27 @@ def order_page(customer_id):
         print(orders_list)
             
         return render_template('order_page.html', customer_id=customer_id, customer_name=data[3], orders=orders_list)
+    return redirect(url_for('loginOrRegister'))
+
+@app.route('/order_page_all', methods=['GET', 'POST'])
+def order_page_all():
+    if 'loggedin' in session:
+        cursor = mysql.cursor()
+        cursor.execute(query.browseAllOrdersOid())
+        oid_list = list(cursor.fetchall())
+        orders_list = []
+        for oid in oid_list:
+            order_dict = {}
+            order_dict['oid'] = oid[0]
+            cursor.execute(query.browseAllOrdersProductsByOid(), (oid[0],))
+            products = cursor.fetchall()
+            order_dict['products'] = list(products)
+            sum = 0
+            for product in products:
+                sum += product[1] * product[5]
+            order_dict['total_price'] = sum
+            orders_list.append(order_dict)
+        return render_template('order_page_all.html', orders=orders_list)
     return redirect(url_for('loginOrRegister'))
 
 @app.route('/buy_products/<customer_id>', methods=['GET', 'POST'])

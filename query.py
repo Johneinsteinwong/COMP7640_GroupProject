@@ -117,7 +117,27 @@ def browseAllOrdersByCid():
     '''
     return sql
 
+<<<<<<< Updated upstream
 # browse all order by order ID and customer ID
+=======
+def browseAllOrdersOid():
+    sql = '''
+    SELECT oid FROM Ordered
+    GROUP BY oid
+    '''
+    return sql
+
+def browseAllOrdersProductsByOid():
+    sql = '''
+    WITH TMP AS
+        (SELECT pname, price, Ordered.* FROM Ordered INNER JOIN Product 
+            ON Ordered.pid = Product.pid)
+    SELECT TMP.* FROM TMP
+    WHERE oid = %s
+    '''
+    return sql
+
+>>>>>>> Stashed changes
 def browseAllOrdersProductsByOidCid():
     sql = '''
     WITH TMP AS
@@ -221,6 +241,25 @@ def updateCart():
     '''
     return sql
 
+<<<<<<< Updated upstream
+=======
+def updateInventory():
+    sql = '''
+    UPDATE Product
+    SET inventory = %s
+    WHERE pid = %s
+    '''
+    return sql
+
+def updateOrderProductStatus():
+    sql = '''
+    UPDATE Ordered
+    SET orderStatus = %s
+    WHERE oid = %s AND pid = %s
+    '''
+    return sql
+
+>>>>>>> Stashed changes
 def deleteCart():
     sql = '''
     DELETE FROM Cart
