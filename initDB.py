@@ -89,6 +89,7 @@ sql_cart = '''
 '''
 
 try:
+    # Create the required tables
     cursor.execute(sql_customer)
     cursor.execute(sql_Vendor)
     cursor.execute(sql_product)
@@ -97,13 +98,14 @@ try:
     cursor.execute(sql_cart)
     print ('Table created')
 
+    # Create and insert sample data 
     apple_password = 'apple2024'
     samsung_password = 'samsung2024'
     xiaomi_password = 'xiaomi2024'
     huawei_password =  'huawei2024'
     nvidia_password = 'nvidia2024'
     amd_password = 'amd2024'
-    # TODO: Need to update the salt here
+
     apple_hashed_password = sha256(str.encode(apple_password + str(1))).hexdigest()
     samsung_hashed_password = sha256(str.encode(samsung_password + str(1))).hexdigest()
     xiaomi_hashed_password = sha256(str.encode(xiaomi_password + str(1))).hexdigest()
@@ -111,6 +113,7 @@ try:
     nvidia_hashed_password = sha256(str.encode(nvidia_password + str(1))).hexdigest()
     amd_hashed_password = sha256(str.encode(amd_password + str(1))).hexdigest()
 
+    # Inserting example vendors 
     cursor.execute(query.addVendor(), ('Apple', 4.9, 'California, USA', apple_hashed_password, 1))
     cursor.execute(query.addVendor(), ('Samsung', 4.8, 'Seoul, Korea', samsung_hashed_password, 1))
     cursor.execute(query.addVendor(), ('Xiaomi', 4.7, 'Beijing, China', xiaomi_hashed_password, 1))
@@ -131,6 +134,7 @@ try:
     cursor.execute(query.getVid(), ('AMD',))
     amd_vid = cursor.fetchone()[0]
 
+    # Inserting example products
     cursor.execute(query.addProduct(), ('iPhone 13', 999.99, apple_vid, 100, 'smartphone', 'apple', 'ios', 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_SX679_.jpg'))
     cursor.execute(query.addProduct(), ('Galaxy S21', 899.99, samsung_vid, 100, 'smartphone', 'samsung', 'android', 'https://m.media-amazon.com/images/I/51FN6vqYb9L._AC_SX679_.jpg'))
     cursor.execute(query.addProduct(), ('Mi 11', 799.99, xiaomi_vid, 100, 'smartphone', 'xiaomi', 'android', 'https://m.media-amazon.com/images/I/517JD64MdxL._AC_SX679_.jpg'))
@@ -162,6 +166,8 @@ try:
     cursor.execute(query.addProduct(), ('NVIDIA A100 Tensor Core GPU', 2999.99, nvidia_vid, 100, 'graphics card', 'nvidia', 'nvidia a100', 'https://m.media-amazon.com/images/I/51+9unnbV6L._AC_UY218_.jpg'))
     cursor.execute(query.addProduct(), ('Radeon Pro VII', 2799.99, amd_vid, 100, 'graphics card', 'amd', 'amd radeon', 'https://m.media-amazon.com/images/I/51kJLKR4slL._AC_UY218_.jpg'))
     db.commit()
+
+    # Inserting example admin account
     admin_password = 'admin2024'
     admin_hashed_password = sha256(str.encode(admin_password + str(1))).hexdigest()
     cursor.execute(query.addAdmin(), ('admin', admin_hashed_password, 1))
