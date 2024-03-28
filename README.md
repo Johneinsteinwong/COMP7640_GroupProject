@@ -54,11 +54,13 @@ Where username and password are your MySQL user and password respectively.
 - Enter the username and password for Vendor Admin page, default values are 'testing' and '1234' respectively.
 - Click the 'Login' button.
 
+![](/img/admin_login.JPG)
+
 # Vendor Administration
 - Click "Go to vendor list" to view the list of all vendors.
 - To onboard a new vendor, click "Add Vendor", enter the fields for "Business Name", "Score", and "Address", click "Save".
 
-![](/img/admin_login.JPG)
+
 
 # Registering a Vendor account
 - To register for a vendor account, go back to the home page and click "Register" tab (http://127.0.0.1:5000/register).
