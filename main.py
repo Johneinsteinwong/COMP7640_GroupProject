@@ -266,11 +266,28 @@ def buy_products(customer_id):
             latest_oid = int(max_oid[0]) + 1
 
         time_stamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        flag = 0
         for product in products:
-            cursor.execute(query.addOrder(), (latest_oid, customer_id, product[1], product[2], time_stamp))
-            cursor.execute(query.deleteCart(), (customer_id, product[1]))
+            cursor.execute(query.browseProductByPid(), (product[1],))
+            product_garage = cursor.fetchone()
+            Inventory = product_garage[4]
+            if Inventory != 0:
+                if Inventory - product[2] < 0:
+                    flash(product_garage[1] + ' Inventory is not enough!')
+                    flag = 1
+                else:
+                    cursor.execute(query.addOrder(), (latest_oid, customer_id, product[1], product[2], time_stamp))
+                    cursor.execute(query.deleteCart(), (customer_id, product[1]))
+                    cursor.execute(query.updateInventory(), (Inventory - product[2], product[1]))
+            else:
+                flash(product_garage[1] + ' Inventory is 0')
+                flag = 1
         mysql.commit()
-        return redirect(url_for('order_page', customer_id=customer_id))
+        if flag == 0:
+            flash('Order success!')
+            return redirect(url_for('order_page', customer_id=customer_id))
+        else:
+            return redirect(url_for('cart_page', customer_id=customer_id))
 
 @app.route('/vendor_page/<vendor_id>')
 def vendor_page(vendor_id):

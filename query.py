@@ -60,12 +60,18 @@ def browseProductByPname():
     '''
     return sql
 
+def browseProductByPid():
+    sql = '''
+    SELECT * FROM Product
+    WHERE pid = %s
+    '''
+    return sql
+
 def browseCartProductsByCid():
     sql = '''
     WITH TMP AS
         (SELECT Cart.*, pname, price FROM Cart INNER JOIN Product 
             ON Cart.pid = Product.pid)
-
     SELECT TMP.* FROM TMP 
             WHERE cid = %s;
     '''
@@ -201,6 +207,14 @@ def updateCart():
     UPDATE Cart
     SET quantity = %s
     WHERE cid = %s AND pid = %s
+    '''
+    return sql
+
+def updateInventory():
+    sql = '''
+    UPDATE Product
+    SET inventory = %s
+    WHERE pid = %s
     '''
     return sql
 
