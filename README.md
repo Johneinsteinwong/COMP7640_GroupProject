@@ -54,11 +54,44 @@ Where username and password are your MySQL user and password respectively.
 - Enter the username and password for Vendor Admin page, default values are 'testing' and '1234' respectively.
 - Click the 'Login' button.
 
-# Vender Management
+# Vendor Administration
 - Click "Go to vendor list" to view the list of all vendors.
-- To add a new vendor, click "Add Vendor", enter the fields for "Business Name", "Score", and "Address", click "Save".
+- To onboard a new vendor, click "Add Vendor", enter the fields for "Business Name", "Score", and "Address", click "Save".
 
 ![](/img/admin_login.JPG)
+
+# Product Catalog Management
+- To browse the products offered by a specific vendor, 
 # Registering a Vendor account
+- To register for a vendor account, go back to the home page and click "Register" tab (http://127.0.0.1:5000/register).
+- Select "Vendor" from the drop down menu, enter the vendor information (username, password, location, phone number).
+- Click "Register".
+- There are some initial vendor accounts specified in initDB.py. For example, you can login with the username 'Apple' and password 'apple2024'.
+- The corresponding Python code for initializing these accounts are given below:
+```
+    apple_password = 'apple2024'
+    samsung_password = 'samsung2024'
+    xiaomi_password = 'xiaomi2024'
+    huawei_password =  'huawei2024'
+    nvidia_password = 'nvidia2024'
+    amd_password = 'amd2024'
+    # TODO: Need to update the salt here
+    apple_hashed_password = sha256(str.encode(apple_password + str(1))).hexdigest()
+    samsung_hashed_password = sha256(str.encode(samsung_password + str(1))).hexdigest()
+    xiaomi_hashed_password = sha256(str.encode(xiaomi_password + str(1))).hexdigest()
+    huawei_hashed_password = sha256(str.encode(huawei_password + str(1))).hexdigest()
+    nvidia_hashed_password = sha256(str.encode(nvidia_password + str(1))).hexdigest()
+    amd_hashed_password = sha256(str.encode(amd_password + str(1))).hexdigest()
+
+    cursor.execute(query.addVendor(), ('Apple', 4.9, 'California, USA', apple_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Samsung', 4.8, 'Seoul, Korea', samsung_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Xiaomi', 4.7, 'Beijing, China', xiaomi_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Huawei', 4.6, 'Shenzhen, China', huawei_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('Nvidia', 4.9, 'California, USA', nvidia_hashed_password, 1))
+    cursor.execute(query.addVendor(), ('AMD', 4.8, 'California, USA', amd_hashed_password, 1))
+```
 
 # Registering a Customer account
+- To register for a customer account, go back to the home page and click "Register" tab (http://127.0.0.1:5000/register).
+- Select "Customer" from the drop down menu, enter the customer information (username, password, location, phone number).
+- Click "Register".
