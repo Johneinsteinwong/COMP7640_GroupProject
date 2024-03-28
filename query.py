@@ -128,7 +128,7 @@ def browseAllOrdersProductsByOidCid():
     '''
     return sql
 
-# get vendor ID by vendor name
+# Add vendor ID by vendor name
 def getVid():
     sql = '''
     SELECT vid FROM Vendor
