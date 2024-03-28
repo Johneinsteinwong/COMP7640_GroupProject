@@ -103,3 +103,21 @@ Where username and password are your MySQL user and password respectively.
 - To register for a customer account, go back to the home page and click "Register" tab (http://127.0.0.1:5000/register).
 - Select "Customer" from the drop down menu, enter the customer information (username, password, location, phone number).
 - Click "Register".
+- You should see "Congras! Now you are one of the user" if successful.
+
+# Product Discovery
+- Go back to the login page , select "Customer" and login with the credential you created.
+- To discover products using tags, enter a tag in the search bar and click the "magnifier" icon.
+
+![](/img/search.JPG)
+
+- For example, entering "Apple" in the search bar and search, it will return all Apple products.
+- The search function also support partial matching, for example, entering "app" or "ple" will also return
+all Apple products, while entering "sam" will return all Samsung products.
+- You can also discover products by their names or partial names. For example, entering "book" will return all products
+with names containing "book", including "Galaxy Book", "MacBook Pro", "MateBook", etc. 
+- You can also discover products using their exact names, for example, entering "MacBook Pro" will only return the product "MacBook Pro".
+
+
+# Product Purchase
+
