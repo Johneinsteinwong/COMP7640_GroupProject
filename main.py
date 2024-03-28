@@ -33,6 +33,7 @@ mysql = pymysql.connect(
 # Functional check method
 @app.route('/check_username', methods=['POST'])
 def check_username():
+    # check if user already exists
     username = request.json['username']
     cursor = mysql.cursor()
     cursor.execute(query.checkUsername(), (username,))
@@ -43,6 +44,7 @@ def check_username():
 
 @app.route('/product_update_data', methods=['POST'])
 def product_update_data():
+    # Update product information
     pid = request.json['pid']
     price = request.json['price']
     # vid = request.json['vid']
@@ -57,6 +59,7 @@ def product_update_data():
 
 @app.route('/product_add_data', methods=['POST'])
 def product_add_data():
+    # Add new product
     cursor = mysql.cursor()
     cursor.execute(query.browseVendorByVname(), (request.json['vname'],))
     vendor = cursor.fetchone()
@@ -75,6 +78,7 @@ def product_add_data():
 
 @app.route('/vendor_add_data', methods=['POST'])
 def vendor_add_data():
+    # Add new vendor
     vname = request.json['vname']
     # password = request.json['password']
     geographic = request.json['vgeographic']
@@ -88,6 +92,7 @@ def vendor_add_data():
 
 @app.route('/get_new_pid', methods=['POST'])
 def get_new_pid():
+    # Increment product ID
     cursor = mysql.cursor()
     cursor.execute(query.getNewPid())
     data = cursor.fetchone()
@@ -96,6 +101,7 @@ def get_new_pid():
 
 @app.route('/get_new_vid', methods=['POST'])
 def get_new_vid():
+    # Increment vendor ID
     cursor = mysql.cursor()
     cursor.execute(query.getNewVid())
     data = cursor.fetchone()
@@ -104,6 +110,7 @@ def get_new_vid():
 
 @app.route('/add_cart/<customer_id>', methods=['POST'])
 def add_cart(customer_id):
+    # Add products to cart
     cursor = mysql.cursor()
     product_name = request.json['product_name']
     print(product_name)
@@ -118,6 +125,7 @@ def add_cart(customer_id):
 
 @app.route('/delete_cart/<customer_id>', methods=['POST'])
 def delete_cart(customer_id):
+    # Delete product from cart
     cursor = mysql.cursor()
     product_name = request.json['product_name']
     cursor.execute(query.browseProductByPname(), (product_name,))
@@ -129,6 +137,7 @@ def delete_cart(customer_id):
 
 @app.route('/update_cart/<customer_id>', methods=['POST'])
 def update_cart(customer_id):
+    # Update products in cart
     cursor = mysql.cursor()
     product_name = request.json['product_name']
     cursor.execute(query.browseProductByPname(), (product_name,))
@@ -141,6 +150,7 @@ def update_cart(customer_id):
 
 @app.route('/logout')
 def logout():
+    # Logout account
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('username', None)
@@ -156,6 +166,7 @@ def logout():
 
 @app.route('/search_product', methods=['GET', 'POST'])
 def search_product():
+    # Search for products
     pname = request.form['search_info']
     # pname = request.json['search_info']
     # print(pname)
@@ -178,6 +189,7 @@ def search_product():
 
 @app.route('/remove_all_from_cart/<customer_id>', methods=['POST'])
 def remove_all_from_cart(customer_id):
+    # Remove all products from cart
     cursor = mysql.cursor()
     cursor.execute(query.deleteCartByCid(), (customer_id,))
     mysql.commit()
