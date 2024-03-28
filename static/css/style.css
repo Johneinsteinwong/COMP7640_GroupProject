@@ -1263,6 +1263,18 @@ body {
 .buttons {
   text-align: right;
 }
+.btn-quantity{
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+.td-center{
+  text-align: center;
+
+}
 
 http://kute-themes.com/html/boutique/html/index.html
 https://template.hasthemes.com/noraure/noraure/index.html

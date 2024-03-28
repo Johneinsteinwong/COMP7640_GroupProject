@@ -25,26 +25,23 @@
             <div class="row">
 
                {% for item in data %}
-               <div class="col-sm-6 col-md-4 col-lg-3">
+               <div class="col-sm-6 col-md-4 col-lg-3" id="item-{{loop.index}}">
                   <div class="box">
                      <div class="option_container">
                         <div class="options">
-                           <a href="" class="option1">
+                           <button type="button" class="option1 add_cart" data-item-id="{{loop.index}}">
                            Add To Cart
-                           </a>
-                           <a href="" class="option2">
+                           </button>
+                           <button type="button" href="" class="option2" id="buy_now">
                            Buy Now
-                           </a>
+                           </button>
                         </div>
                      </div>
                      <div class="img-box">
                         <img src={{ item[8] }} alt="">
                      </div>
                      <div class="detail-box">
-                        <h5>
-                           <!--pname dyn-->
-                           {{ item[1] }}
-                        </h5>
+                        <h5>{{ item[1] }}</h5>
                         <br>
                         <h5>
                            {{ item[2] }}
@@ -62,5 +59,41 @@
             </div>
          </div>
       </section>
+      <script>
+         document.querySelectorAll('.add_cart').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+               event.preventDefault();
+               var itemId = this.getAttribute('data-item-id');
+               var itemElement = document.getElementById('item-' + itemId);
+               var itemName = itemElement.querySelector('.detail-box h5').textContent;
+               console.log(itemName); // Logs the item name to the console
+
+               // Now you can get the item data from itemElement
+
+               fetch("{{url_for('add_cart', customer_id = customer_id)}}", {
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                     product_name: itemName
+                  }),
+               })
+               .then(response => response.json())
+               .then(data => {
+                  alert(data.msg);
+               })
+               .catch((error) => {
+                  console.error('Error:', error)
+                  });
+            });
+         });
+
+         var buy_now = document.getElementById('buy_now');
+
+         buy_now.addEventListener('click', function(){
+             alert('Buy now');
+         });
+      </script>
       <!-- end product section -->
 {% endblock %}

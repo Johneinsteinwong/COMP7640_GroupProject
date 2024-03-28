@@ -53,6 +53,24 @@ def browseCustomerByCid():
     '''
     return sql
 
+def browseProductByPname():
+    sql = '''
+    SELECT * FROM Product
+    WHERE pname = %s
+    '''
+    return sql
+
+def browseCartProductsByCid():
+    sql = '''
+    WITH TMP AS
+        (SELECT Cart.*, pname, price FROM Cart INNER JOIN Product 
+            ON Cart.pid = Product.pid)
+
+    SELECT TMP.* FROM TMP 
+            WHERE cid = %s;
+    '''
+    return sql
+
 # Browse all products offered by a specific vendor
 def browseAllProductsByVendor():
     sql = '''
@@ -76,6 +94,24 @@ def browseAllProductsByCustomer():
             WHERE username = %s;
     '''
     # cursor.execute(sql,(cname,))
+    return sql
+
+def browseAllOrdersByCid():
+    sql = '''
+    SELECT oid FROM Ordered
+    WHERE cid = %s
+    GROUP BY oid
+    '''
+    return sql
+
+def browseAllOrdersProductsByOidCid():
+    sql = '''
+    WITH TMP AS
+        (SELECT pname, price, Ordered.* FROM Ordered INNER JOIN Product 
+            ON Ordered.pid = Product.pid)
+    SELECT TMP.* FROM TMP
+    WHERE oid = %s AND cid = %s
+    '''
     return sql
 
 def getVid():
@@ -126,6 +162,13 @@ def addProduct():
     '''
     return sql
 
+def addCart():
+    sql = '''
+    INSERT INTO Cart(cid, pid, quantity)
+    VALUES (%s,%s,%s)
+    '''
+    return sql
+
 def addAdmin():
     sql = '''
     INSERT INTO vAdmin(username, password, salt)
@@ -138,6 +181,28 @@ def updateProduct():
     UPDATE Product
     SET price = %s, inventory = %s, tag1 = %s, tag2 = %s, tag3 = %s
     WHERE pid = %s
+    '''
+    return sql
+
+def updateCart():
+    sql = '''
+    UPDATE Cart
+    SET quantity = %s
+    WHERE cid = %s AND pid = %s
+    '''
+    return sql
+
+def deleteCart():
+    sql = '''
+    DELETE FROM Cart
+    WHERE cid = %s AND pid = %s
+    '''
+    return sql
+
+def deleteCartByCid():
+    sql = '''
+    DELETE FROM Cart
+    WHERE cid = %s
     '''
     return sql
 # Update class function end

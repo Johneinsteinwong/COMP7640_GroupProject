@@ -56,7 +56,7 @@ sql_product = '''
 '''
 sql_order = '''
     CREATE TABLE Ordered(
-        oid INTEGER NOT NULL AUTO_INCREMENT,
+        oid INTEGER NOT NULL,
         cid INTEGER NOT NULL,
         pid INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
@@ -76,12 +76,25 @@ sql_Vendor_admin = '''
         PRIMARY KEY(id)
     )
 '''
+
+sql_cart = '''
+    CREATE TABLE Cart(
+        cid INTEGER NOT NULL,
+        pid INTEGER NOT NULL,
+        quantity INTEGER NOT NULL,
+        PRIMARY KEY(cid, pid),
+        FOREIGN KEY(cid) REFERENCES Customer(cid),
+        FOREIGN KEY(pid) REFERENCES Product(pid)
+    );
+'''
+
 try:
     cursor.execute(sql_customer)
     cursor.execute(sql_Vendor)
     cursor.execute(sql_product)
     cursor.execute(sql_order)
     cursor.execute(sql_Vendor_admin)
+    cursor.execute(sql_cart)
     print ('Table created')
 
     apple_password = 'apple2024'

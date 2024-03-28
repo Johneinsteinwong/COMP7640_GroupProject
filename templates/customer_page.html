@@ -29,7 +29,7 @@
                 <p>Customer Name: {{ customer_name }}</p>
                 <p>Customer Contact Number: {{ customer_phone }}</p>
                 <p>Customer Shipping address details: {{ customer_address }}</p>
-                <a href="#">Order History</a>
+                <a href="{{url_for('order_page', customer_id = customer_id)}}">Order History</a>
                 </div>
               </div>
               <div class="buttons">

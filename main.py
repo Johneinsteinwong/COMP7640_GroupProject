@@ -100,6 +100,54 @@ def get_new_vid():
     print(data)
     return {'vid': str(int(data[0]) + 1)}
 
+@app.route('/add_cart/<customer_id>', methods=['POST'])
+def add_cart(customer_id):
+    cursor = mysql.cursor()
+    product_name = request.json['product_name']
+    print(product_name)
+    cursor.execute(query.browseProductByPname(), (product_name,))
+    # cursor.execute(query.browseProductByPid(), (product_id,))
+    product = cursor.fetchone()
+    pid = product[0]
+    # print(pid)
+    cursor.execute(query.addCart(), (customer_id, pid, 1))
+    mysql.commit()
+    return {'success': True}
+
+@app.route('/delete_cart/<customer_id>', methods=['POST'])
+def delete_cart(customer_id):
+    cursor = mysql.cursor()
+    product_name = request.json['product_name']
+    cursor.execute(query.browseProductByPname(), (product_name,))
+    product = cursor.fetchone()
+    pid = product[0]
+    cursor.execute(query.deleteCart(), (customer_id, pid))
+    mysql.commit()
+    return {'success': True}
+
+@app.route('/update_cart/<customer_id>', methods=['POST'])
+def update_cart(customer_id):
+    cursor = mysql.cursor()
+    product_name = request.json['product_name']
+    cursor.execute(query.browseProductByPname(), (product_name,))
+    product = cursor.fetchone()
+    pid = product[0]
+    quantity = request.json['quantity']
+    cursor.execute(query.updateCart(), (quantity, customer_id, pid))
+    mysql.commit()
+    return {'success': True}
+
+@app.route('/buy_products/<customer_id>', methods=['POST'])
+def buy_products(customer_id):
+    cursor = mysql.cursor()
+    cursor.execute(query.browseCartProductsByCid(), (customer_id,))
+    products = cursor.fetchall()
+    for product in products:
+        cursor.execute(query.addOrder(), (customer_id, product[0], product[2]))
+        cursor.execute(query.deleteCart(), (customer_id, product[0]))
+    mysql.commit()
+    return {'success': True}
+
 # @app.route('/product_delete_data', methods=['POST'])
 
 
@@ -136,6 +184,12 @@ def search_product():
     # print(data)
     return render_template('products.html', data=datalist, hint_word=hint_word, customer_name=customer_name, customer_id=customer_id)
 
+@app.route('/remove_all_from_cart/<customer_id>', methods=['POST'])
+def remove_all_from_cart(customer_id):
+    cursor = mysql.cursor()
+    cursor.execute(query.deleteCartByCid(), (customer_id,))
+    mysql.commit()
+    return {'success': True}
 
 # Page represent function
 # Kinney route
@@ -146,7 +200,9 @@ def cart_page(customer_id):
         cursor.execute(query.browseCustomerByCid(), (customer_id,))
         data = cursor.fetchone()
         print(data)
-        return render_template('cart_page.html', customer_id=customer_id, customer_name=data[3])
+        cursor.execute(query.browseCartProductsByCid(), (customer_id,))
+        products = cursor.fetchall()
+        return render_template('cart_page.html', customer_id=customer_id, customer_name=data[3], products = products)
     return redirect(url_for('loginOrRegister'))
 
 @app.route('/customer_page/<customer_id>')
@@ -161,6 +217,37 @@ def customer_page(customer_id):
         return render_template('customer_page.html',customer_id=customer_id, customer_name=data[3], customer_address=data[2], customer_phone=data[1])
     # User is not loggedin redirect to login page
     return redirect(url_for('loginOrRegister'))
+
+@app.route('/order_page/<customer_id>', methods=['GET', 'POST'])
+def order_page(customer_id):
+    if 'loggedin' in session:
+        cursor = mysql.cursor()
+        cursor.execute(query.browseCustomerByCid(), (customer_id,))
+        data = cursor.fetchone()
+
+        # get all order ids of the customer
+        cursor.execute(query.browseAllOrdersByCid(), (customer_id,))
+        order_ids = cursor.fetchall()
+        # print(order_ids)
+        list_order_ids = list(order_ids)
+        print(list_order_ids)
+        orders_list = []
+        for oid in list_order_ids:
+            print(oid[0])
+            order_dict = {}
+            # may have wrong
+            order_dict['oid'] = oid[0]
+            cursor.execute(query.browseAllOrdersProductsByOidCid(), (oid[0], customer_id,))
+            products = cursor.fetchall()
+            order_dict['products'] = list(products)
+            orders_list.append(order_dict)
+            print(order_dict)
+        print(orders_list)
+            
+
+        return render_template('order_page.html', customer_id=customer_id, customer_name=data[3], products = products, orders=orders_list)
+    return redirect(url_for('loginOrRegister'))
+
 
 @app.route('/vendor_page/<vendor_id>')
 def vendor_page(vendor_id):
