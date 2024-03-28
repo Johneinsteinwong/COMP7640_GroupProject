@@ -16,8 +16,14 @@
 - Order Modification
     - [ ] Users must have the option to modify their orders, including the removal of specific products or the cancellation of the entire order before it enters the shipping process
 	
-# Getting Started
-
+# Requirements
+- Python 3.11
+- [Optional] Virtual environment such as conda
+# Installing dependencies
+- Run pip install to install dependencies:
+```
+	pip install -r requirements.txt
+```
 
 # Setting up MySQL database	
 - Go to MySQL workbench and create a database called 'ecommerce':
