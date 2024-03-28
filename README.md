@@ -57,7 +57,7 @@ Where username and password are your MySQL user and password respectively.
 # Vender Management
 - Click "Go to vendor list" to view the list of all vendors.
 - To add a new vendor, click "Add Vendor", enter the fields for "Business Name", "Score", and "Address", click "Save".
-
+!(/img/admin_login.JPG)
 # Registering a Vendor account
 
 # Registering a Customer account
