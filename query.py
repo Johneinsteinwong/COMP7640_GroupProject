@@ -117,9 +117,7 @@ def browseAllOrdersByCid():
     '''
     return sql
 
-<<<<<<< Updated upstream
 # browse all order by order ID and customer ID
-=======
 def browseAllOrdersOid():
     sql = '''
     SELECT oid FROM Ordered
@@ -137,7 +135,6 @@ def browseAllOrdersProductsByOid():
     '''
     return sql
 
->>>>>>> Stashed changes
 def browseAllOrdersProductsByOidCid():
     sql = '''
     WITH TMP AS
@@ -241,8 +238,6 @@ def updateCart():
     '''
     return sql
 
-<<<<<<< Updated upstream
-=======
 def updateInventory():
     sql = '''
     UPDATE Product
@@ -259,7 +254,6 @@ def updateOrderProductStatus():
     '''
     return sql
 
->>>>>>> Stashed changes
 def deleteCart():
     sql = '''
     DELETE FROM Cart
