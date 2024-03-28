@@ -60,8 +60,6 @@ Where username and password are your MySQL user and password respectively.
 
 ![](/img/admin_login.JPG)
 
-# Product Catalog Management
-- To browse the products offered by a specific vendor, 
 # Registering a Vendor account
 - To register for a vendor account, go back to the home page and click "Register" tab (http://127.0.0.1:5000/register).
 - Select "Vendor" from the drop down menu, enter the vendor information (username, password, location, phone number).
@@ -91,6 +89,14 @@ Where username and password are your MySQL user and password respectively.
     cursor.execute(query.addVendor(), ('AMD', 4.8, 'California, USA', amd_hashed_password, 1))
 ```
 
+# Product Catalog Management
+- To browse the products offered by a specific vendor, login a vendor account.
+- Go back to the login page and select "Vendor" from the drop down menu.
+- Login with one of the vendor credential given in the previous step, or the one you registered. 
+- Click "View Product" to browse all products offered by the vendor account you logged in.
+- To introduce new products to the vendor's catalog, click "Add Product" and fill in the product information 
+(Product Name, Listed Price/HKD, Product Tag1, Product Tag2, Product Tag3, Inventory/Unit), click "Save".
+ 
 # Registering a Customer account
 - To register for a customer account, go back to the home page and click "Register" tab (http://127.0.0.1:5000/register).
 - Select "Customer" from the drop down menu, enter the customer information (username, password, location, phone number).
