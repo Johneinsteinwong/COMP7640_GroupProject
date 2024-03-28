@@ -99,7 +99,7 @@ Where username and password are your MySQL user and password respectively.
 - To introduce new products to the vendor's catalog, click "Add Product" and fill in the product information 
 (Product Name, Listed Price/HKD, Product Tag1, Product Tag2, Product Tag3, Inventory/Unit), click "Save".
  
-# Registering a Customer account
+# Registering a Customer Account
 - To register for a customer account, go back to the home page and click "Register" tab (http://127.0.0.1:5000/register).
 - Select "Customer" from the drop down menu, enter the customer information (username, password, location, phone number).
 - Click "Register".
