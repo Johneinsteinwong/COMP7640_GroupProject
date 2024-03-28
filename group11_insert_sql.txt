@@ -139,6 +139,49 @@ cursor.execute(query.addProduct(), ('Radeon RX 7900 XT', 1799.99, amd_vid, 100, 
 cursor.execute(query.addProduct(), ('NVIDIA A100 Tensor Core GPU', 2999.99, nvidia_vid, 100, 'graphics card', 'nvidia', 'nvidia a100', 'https://m.media-amazon.com/images/I/51+9unnbV6L._AC_UY218_.jpg'))
 cursor.execute(query.addProduct(), ('Radeon Pro VII', 2799.99, amd_vid, 100, 'graphics card', 'amd', 'amd radeon', 'https://m.media-amazon.com/images/I/51kJLKR4slL._AC_UY218_.jpg'))
 
+# Add vendor ID by vendor name
+def addVendor():
+    # password = sha256(str.encode(password + str(salt))).hexdigest()
+    sql = '''
+    INSERT INTO Vendor(vname, score, geographic, password, salt)
+    VALUES (%s,%s,%s,%s,%s)
+    '''
+    return sql
+# Add new customer
+def addCustomer():
+    # password = sha256(str.encode(password + str(salt))).hexdigest()
+    sql = '''
+    INSERT INTO Customer(contactNumber, shippingDetail, username, password, salt)
+    VALUES (%s,%s,%s,%s,%s)
+    '''
+    return sql
 
-
+# Introduce new products to a vendor's catalog
+def addProduct():
+    sql = '''
+    INSERT INTO Product(pname, price, vid, inventory, tag1, tag2, tag3, url) 
+    VALUES (%s,%s,%s,%s, %s, %s, %s, %s)
+    '''
+    return sql
+# Add product to cart
+def addCart():
+    sql = '''
+    INSERT INTO Cart(cid, pid, quantity)
+    VALUES (%s,%s,%s)
+    '''
+    return sql
+# Add admin account credential
+def addAdmin():
+    sql = '''
+    INSERT INTO vAdmin(username, password, salt)
+    VALUES (%s,%s,%s)
+    '''
+    return sql
+# Add order by a customer
+def addOrder():
+    sql = '''
+    INSERT INTO Ordered(oid, cid, pid, quantity, orderStatus, orderTime)
+    VALUES (%s,%s,%s,%s,'order received',%s)
+    '''
+    return sql
 
