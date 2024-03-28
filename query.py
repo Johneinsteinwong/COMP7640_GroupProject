@@ -305,21 +305,37 @@ def purchase(cid, pid, quantity, orderTime):
 
 # cancellation of the entire order before it enters the shipping process
 def cancelOrder(oid):
+    cursor.execute('''
+        SELECT orderStatus 
+        FROM Ordered
+        WHERE oid = %s
+    ''', (oid,))
+    status = cursor.fetchone()
+
     sql = '''
     UPDATE Ordered
     SET orderStatus = 'cancelled'
     WHERE oid = %s
     '''
-    cursor.execute(sql,(oid,))
-    db.commit()
+    if status == 'order received':
+        cursor.execute(sql,(oid,))
+        db.commit()
 
 
 
 # the removal of specific products
 def removeProduct(oid,pid):
+    cursor.execute('''
+        SELECT orderStatus 
+        FROM Ordered
+        WHERE oid = %s AND pid = %s
+    ''', (oid,pid))
+
+    status = cursor.fetchone()
     sql = '''
     DELETE FROM Ordered
     WHERE oid = %s AND pid = %s
     '''
-    cursor.execute(sql, (oid,pid))
-    db.commit()
+    if status == 'order received':
+        cursor.execute(sql, (oid,pid))
+        db.commit()

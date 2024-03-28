@@ -147,15 +147,21 @@ with names containing "book", including "Galaxy Book", "MacBook Pro", "MateBook"
 
 # Order Modification
 - To remove a specific product, call the removeProduct(oid,pid) function and input the Order ID (oid) and Product ID (pid).
+- This query will only be executed if the orderStatus is 'order received' (not 'shipping' nor 'fulfilled' nor 'cancelled').
 - The following example remove the product with pid=1 from the order with oid=1.
 
 ![](/img/removeProduct.JPG)
 
 - To cancel the entire order, call the cancelOrder(oid) and input the Order id (oid).
+- This query will only be executed if the orderStatus is 'order received' (not 'shipping' nor 'fulfilled' nor 'cancelled').
 - The following example remove the order with oid=1, after executing the function, orderStatus will be changed to "cancelled".
 
 ![](/img/cancelOrder.JPG)
 ![](/img/cancelOrder2.JPG)
 
+- In this example, product with oid=1 and pid=2 has the orderStatus 'cancelled'.
+- Executing removeProduct(1,2) will do nothing.
+
+![](/img/cancelOrder3.JPG)
 
 
